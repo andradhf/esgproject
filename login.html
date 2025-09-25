@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Monitoring ESG - Login</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900|Poppins:400,600,700&display=swap" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #3fab0e, #0096c7);
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .card {
+            border-radius: 20px;
+        }
+
+        .card-body {
+            background: #ffffff;
+            border-radius: 20px;
+        }
+
+        h1 {
+            font-weight: 700;
+            color: #2b2d42;
+        }
+
+        .form-control-user {
+            border-radius: 30px;
+            padding: 20px;
+            font-size: 14px;
+        }
+
+        .btn-user {
+            border-radius: 30px;
+            font-weight: 600;
+            background: linear-gradient(90deg, #0096c7, #38b000);
+            border: none;
+            color: #000;
+        }
+
+        .btn-user:hover {
+            background: linear-gradient(90deg, #38b000, #0096c7);
+            transform: scale(1.02);
+            transition: all 0.3s ease-in-out;
+            color: #000;
+        }
+
+        .custom-control-label {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .footer-text {
+            text-align: center;
+            margin-top: -10px;
+            color: white;
+            font-size: 22px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Logo kiri atas -->
+    <div style="position:absolute; top:20px; left:20px; z-index:1000;">
+        <img src="img/logo_uhamka.png" alt="Logo UHAMKA" style="height:100px;">
+    </div>
+
+    <!-- Logo kanan atas -->
+    <div style="position:absolute; top:20px; right:20px; z-index:1000;">
+        <img src="img/logo_kemendikbud.png" alt="Logo ESG" style="height:70px;">
+    </div>
+
+    <div class="container">
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+            <div class="col-xl-10 col-lg-12 col-md-9">
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <div class="row">
+                            <div class="col-lg-6 d-none d-lg-block bg-login-image"
+                                style="background:url('img/esg_bg.jpg'); background-size:cover; border-radius:10px 0 0 10px;">
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="p-5">
+                                    <div class="text-center mb-4">
+                                        <h1 class="h4" style="font-weight:700;">
+                                            Selamat Datang di Website ESG Syariah UMKM
+                                        </h1>
+                                    </div>
+
+                                    <!-- FORM LOGIN -->
+                                   <form id="loginForm" class="user" method="POST" action="login.php">
+                                    <div class="form-group">
+                                        <select class="form-control" id="loginRole" name="role" required>
+                                            <option value="">-- Masuk Sebagai --</option>
+                                            <option value="user">User UMKM</option>
+                                            <option value="admin">Admin</option>
+                                        </select>
+                                    </div>
+
+                                        <div class="form-group">
+                                            <input type="email" class="form-control form-control-user"
+                                                id="exampleInputEmail" placeholder="Enter Email Address..." required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" class="form-control form-control-user"
+                                                id="exampleInputPassword" placeholder="Password" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="custom-control custom-checkbox small">
+                                                <input type="checkbox" class="custom-control-input" id="customCheck">
+                                                <label class="custom-control-label" for="customCheck">Remember Me</label>
+                                            </div>
+                                        </div>
+
+                                        <!-- SATU TOMBOL SAJA -->
+                                        <button type="submit" class="btn btn-user btn-block">Login</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+    </div>
+
+    <!-- Teks bawah -->
+    <div class="footer-text">
+        Membangun UMKM Berkelanjutan dengan Prinsip ESG Syariah
+    </div>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function(e) {
+            e.preventDefault(); // cegah reload
+
+            let role = document.getElementById("loginRole").value;
+
+            if (role === "user") {
+                window.location.href = "index.html"; // jika UMKM
+            } else if (role === "admin") {
+                window.location.href = "login_admin.html"; // jika Admin
+            } else {
+                alert("Silakan pilih role terlebih dahulu!");
+            }
+        });
+    </script>
+
+</body>
+</html>

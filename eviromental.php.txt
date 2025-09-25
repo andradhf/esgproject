@@ -1,0 +1,56 @@
+<?php include "config.php"; ?>
+
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $energi = $_POST['energi'];
+    $air    = $_POST['air'];
+    $limbah = $_POST['limbah'];
+    $bahan  = $_POST['bahan'];
+
+    // Masukkan ke database
+    $sql = "INSERT INTO pilar_esg_detail (kategori, indikator, nilai) VALUES
+        ('Environmental', 'Energi', '$energi'),
+        ('Environmental', 'Air', '$air'),
+        ('Environmental', 'Limbah', '$limbah'),
+        ('Environmental', 'Bahan Ramah Lingkungan', '$bahan')";
+
+    if ($conn->query($sql) === TRUE) {
+        echo "<script>alert('Data berhasil disimpan'); window.location='index.php';</script>";
+    } else {
+        echo "Error: " . $conn->error;
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Input Environmental</title>
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+    <h3>Form Environmental</h3>
+    <form method="POST">
+        <div class="form-group">
+            <label>Konsumsi Listrik (kWh)</label>
+            <input type="number" name="energi" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label>Konsumsi Air (m3)</label>
+            <input type="number" name="air" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label>Volume Limbah Padat/Cair (kg)</label>
+            <input type="number" name="limbah" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label>Persentase Bahan Ramah Lingkungan (%)</label>
+            <input type="number" step="0.01" name="bahan" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Simpan</button>
+    </form>
+</div>
+</body>
+</html>

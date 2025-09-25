@@ -1,0 +1,87 @@
+<?php
+// Koneksi database
+$host = "localhost";
+$user = "root";
+$pass = "";
+$db   = "db_egsyariah";
+
+$conn = new mysqli($host, $user, $pass, $db);
+if ($conn->connect_error) {
+    die("Koneksi gagal: " . $conn->connect_error);
+}
+
+// Proses simpan data saat form disubmit
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $karyawan            = $_POST['karyawan'];
+    $karyawan_perempuan  = $_POST['karyawan_perempuan'];
+    $insiden_k3          = $_POST['insiden_k3'];
+    $kejadian            = $_POST['kejadian'];
+    $pelatihan_sdm       = $_POST['pelatihan_sdm'];
+    $produk_halal        = $_POST['produk_halal'];
+    $csr                 = $_POST['csr'];
+    $ziswaf              = $_POST['ziswaf'];
+
+    $sql = "INSERT INTO data_sosial 
+            (karyawan, karyawan_perempuan, insiden_k3, kejadian, pelatihan_sdm, produk_halal, csr, ziswaf) 
+            VALUES 
+            ('$karyawan', '$karyawan_perempuan', '$insiden_k3', '$kejadian', '$pelatihan_sdm', '$produk_halal', '$csr', '$ziswaf')";
+
+    if ($conn->query($sql) === TRUE) {
+        echo "<p style='color:green;'>✅ Data berhasil disimpan!</p>";
+    } else {
+        echo "<p style='color:red;'>❌ Error: " . $conn->error . "</p>";
+    }
+}
+?>
+
+<h2>Form Input Data Sosial</h2>
+<form method="POST">
+  Karyawan: <input type="number" name="karyawan" required><br><br>
+  Karyawan Perempuan: <input type="number" name="karyawan_perempuan" required><br><br>
+  Insiden K3: <input type="number" name="insiden_k3" required><br><br>
+  Kejadian: <input type="text" name="kejadian" required><br><br>
+  Pelatihan SDM: <input type="number" name="pelatihan_sdm" required><br><br>
+  Produk Halal: <input type="text" name="produk_halal" required><br><br>
+  CSR: <input type="text" name="csr" required><br><br>
+  ZISWAF: <input type="text" name="ziswaf" required><br><br>
+  <button type="submit">Simpan</button>
+</form>
+
+<hr>
+
+<h2>Data Sosial</h2>
+<table border="1" cellpadding="8" cellspacing="0">
+  <tr style="background:#f2f2f2;">
+    <th>ID</th>
+    <th>Karyawan</th>
+    <th>Karyawan Perempuan</th>
+    <th>Insiden K3</th>
+    <th>Kejadian</th>
+    <th>Pelatihan SDM</th>
+    <th>Produk Halal</th>
+    <th>CSR</th>
+    <th>ZISWAF</th>
+  </tr>
+<?php
+// Tampilkan data
+$result = $conn->query("SELECT * FROM data_sosial ORDER BY id DESC");
+if ($result->num_rows > 0) {
+    while($row = $result->fetch_assoc()) {
+        echo "<tr>
+                <td>".$row['id']."</td>
+                <td>".$row['karyawan']."</td>
+                <td>".$row['karyawan_perempuan']."</td>
+                <td>".$row['insiden_k3']."</td>
+                <td>".$row['kejadian']."</td>
+                <td>".$row['pelatihan_sdm']."</td>
+                <td>".$row['produk_halal']."</td>
+                <td>".$row['csr']."</td>
+                <td>".$row['ziswaf']."</td>
+              </tr>";
+    }
+} else {
+    echo "<tr><td colspan='9'>Belum ada data</td></tr>";
+}
+$conn->close();
+?>
+</table>

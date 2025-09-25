@@ -1,0 +1,1 @@
+Karyawan:0,KaryawanPerempuan:0,MaqasidTK:,InsidenK3:0,Kejadian:,MaqasidK3:,Pelatihan:0,MaqasidSDM:,ProdukHalal:,MaqasidProduk:,CSR:,Ziswaf:,MaqasidSosial:

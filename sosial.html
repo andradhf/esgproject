@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Form Penilaian Sosial</title>
+</head>
+<body>
+  <h2>Form Penilaian Sosial (S)</h2>
+  <form action="simpan_sosial.php" method="post">
+    <label>Jumlah Karyawan:</label>
+    <input type="number" name="karyawan" required><br><br>
+
+    <label>Program Pelatihan Karyawan:</label>
+    <select name="pelatihan">
+      <option value="Ya">Ya</option>
+      <option value="Tidak">Tidak</option>
+    </select><br><br>
+
+    <label>Keterlibatan Masyarakat:</label>
+    <select name="masyarakat">
+      <option value="Tinggi">Tinggi</option>
+      <option value="Sedang">Sedang</option>
+      <option value="Rendah">Rendah</option>
+    </select><br><br>
+
+    <label>Kepatuhan K3 (Keselamatan & Kesehatan Kerja):</label>
+    <select name="k3">
+      <option value="Baik">Baik</option>
+      <option value="Cukup">Cukup</option>
+      <option value="Kurang">Kurang</option>
+    </select><br><br>
+
+    <button type="submit">Simpan Data Sosial</button>
+  </form>
+</body>
+</html>

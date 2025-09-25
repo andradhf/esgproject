@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile UMKM</title>
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="css/sb-admin-2.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: #f8f9fc;
+    }
+    .card-profile {
+      border-radius: 15px;
+      overflow: hidden;
+    }
+    .card-header {
+      background: linear-gradient(90deg, #1565c0, #26a69a);
+      color: white;
+    }
+    .list-group-item {
+      border: none;
+      border-bottom: 1px solid #eee;
+    }
+    .list-group-item:last-child {
+      border-bottom: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container mt-4">
+  <!-- Tombol Back di atas card -->
+  <div class="mb-3">
+    <button onclick="window.history.back()" class="btn btn-secondary">
+      <i class="fas fa-arrow-left"></i> Back
+    </button>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+
+      <!-- Card Form -->
+      <div class="card card-profile shadow mb-4">
+        <div class="card-header py-3">
+          <h4 class="m-0 font-weight-bold">
+            <i class="fas fa-user-circle"></i> Profile UMKM
+          </h4>
+        </div>
+        <div class="card-body">
+          <form id="profileForm">
+            <div class="form-group">
+              <label for="nama_umkm">Nama UMKM</label>
+              <input type="text" id="nama_umkm" class="form-control" placeholder="Masukkan Nama UMKM">
+            </div>
+            <div class="form-group">
+              <label for="pemilik">Nama Pemilik</label>
+              <input type="text" id="pemilik" class="form-control" placeholder="Masukkan Nama Pemilik">
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" class="form-control" placeholder="Masukkan Email">
+            </div>
+            <div class="form-group">
+              <label for="telepon">No. Telepon</label>
+              <input type="text" id="telepon" class="form-control" placeholder="Masukkan No. Telepon">
+            </div>
+            <div class="form-group">
+              <label for="alamat">Alamat</label>
+              <textarea id="alamat" class="form-control" rows="3" placeholder="Masukkan Alamat"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">
+              <i class="fas fa-save"></i> Simpan
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Card Hasil -->
+      <div id="hasil" class="card shadow" style="display:none;">
+        <div class="card-header bg-success text-white">
+          <h5 class="m-0 font-weight-bold"><i class="fas fa-check-circle"></i> Data Profil Tersimpan</h5>
+        </div>
+        <div class="card-body">
+          <ul class="list-group">
+            <li class="list-group-item"><strong>Nama UMKM:</strong> <span id="out_nama_umkm"></span></li>
+            <li class="list-group-item"><strong>Pemilik:</strong> <span id="out_pemilik"></span></li>
+            <li class="list-group-item"><strong>Email:</strong> <span id="out_email"></span></li>
+            <li class="list-group-item"><strong>Telepon:</strong> <span id="out_telepon"></span></li>
+            <li class="list-group-item"><strong>Alamat:</strong> <span id="out_alamat"></span></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function tampilkanData(data) {
+  document.getElementById("out_nama_umkm").innerText = data.nama_umkm;
+  document.getElementById("out_pemilik").innerText   = data.pemilik;
+  document.getElementById("out_email").innerText     = data.email;
+  document.getElementById("out_telepon").innerText   = data.telepon;
+  document.getElementById("out_alamat").innerText    = data.alamat;
+
+  document.getElementById("hasil").style.display = "block";
+}
+
+// Load data dari localStorage saat halaman dibuka
+window.onload = function() {
+  let savedData = localStorage.getItem("profileUMKM");
+  if (savedData) {
+    let data = JSON.parse(savedData);
+    document.getElementById("nama_umkm").value = data.nama_umkm;
+    document.getElementById("pemilik").value   = data.pemilik;
+    document.getElementById("email").value     = data.email;
+    document.getElementById("telepon").value   = data.telepon;
+    document.getElementById("alamat").value    = data.alamat;
+    tampilkanData(data);
+  }
+};
+
+// Simpan data ke localStorage saat submit
+document.getElementById("profileForm").addEventListener("submit", function(e){
+  e.preventDefault();
+
+  let data = {
+    nama_umkm: document.getElementById("nama_umkm").value,
+    pemilik:   document.getElementById("pemilik").value,
+    email:     document.getElementById("email").value,
+    telepon:   document.getElementById("telepon").value,
+    alamat:    document.getElementById("alamat").value
+  };
+
+  localStorage.setItem("profileUMKM", JSON.stringify(data));
+  tampilkanData(data);
+});
+</script>
+
+</body>
+</html>
