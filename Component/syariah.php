@@ -1,4 +1,4 @@
-<?php include "config.php"; ?>
+<?php include "../config/config.php"; ?>
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $pembiayaan = $_POST['pembiayaan'];
@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
   <meta charset="UTF-8">
   <title>Input Keuangan Syariah</title>
-  <link href="css/sb-admin-2.min.css" rel="stylesheet">
+  <link href="../css/sb-admin-2.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="container mt-4">

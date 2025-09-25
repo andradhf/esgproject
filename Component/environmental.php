@@ -1,5 +1,5 @@
 <?php
-include "config.php";
+include "../config/config.php";
 session_start();
 
 // cek login
@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <title>Monitoring ESG - ENVIROMENTAL</title>
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/sb-admin-2.css" >
     <style>
         .bg-gradient-primary {
             background: linear-gradient(180deg, #1565c0 0%, #26a69a 100%) !important;
@@ -64,15 +64,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../index.php">
                 <div class="sidebar-brand-icon">
-                    <img src="img/logo_uhamka.png" alt="UHAMKA" style="width:70px; height:auto;">
+                    <img src="../img/logo_uhamka.png" alt="UHAMKA" style="width:70px; height:auto;">
                 </div>
                 <div class="sidebar-brand-text mx-3"> ESG Syariah UMKM</div>
             </a>
             <hr class="sidebar-divider my-0">
             <li class="nav-item active">
-                <a class="nav-link" href="index.php">
+                <a class="nav-link" href="../index.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>

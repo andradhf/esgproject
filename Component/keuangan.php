@@ -1,5 +1,5 @@
 <?php
-include "config.php";
+include "../config/config.php";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $pendapatan = $_POST['pendapatan'] ?? '';
@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $insert->bind_param("sissss", $pendapatan, $jumlah_ziswaf, $akad, $maqasid_pendapatan, $maqasid_ziswaf, $maqasid_pembiayaan);
     $insert->execute();
 
-    header("Location: lihatkeuangan.php");
+    header("Location: ../Component/lihatkeuangan.php");
     exit();
 }
 ?>
@@ -33,12 +33,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <title>ESG SYARIAH UMKM - Pilar ESG</title>
 
     <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
           rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
     <style>
         .bg-gradient-primary {
             background: linear-gradient(180deg, #1565c0 0%, #26a69a 100%) !important;
@@ -51,14 +51,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../index.php">
             <div class="sidebar-brand-icon">
-                <img src="img/logo_uhamka.png" alt="UHAMKA" style="width:70px; height:auto;">
+                <img src="../img/logo_uhamka.png" alt="UHAMKA" style="width:70px; height:auto;">
             </div>
             <div class="sidebar-brand-text mx-3"> ESG Syariah UMKM</div>
         </a>
         <hr class="sidebar-divider my-0">
-        <li class="nav-item"><a class="nav-link" href="index.html"><i class="fas fa-fw fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="../index.php"><i class="fas fa-fw fa-tachometer-alt"></i><span>Dashboard</span></a></li>
         <hr class="sidebar-divider">
         <li class="nav-item active">
             <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseUtilities"
@@ -70,10 +70,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                  data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Pilar ESG:</h6>
-                    <a class="collapse-item" href="utilities-color.html">Eviromental</a>
-                    <a class="collapse-item" href="utilities-border.html">Sosial</a>
-                    <a class="collapse-item" href="utilities-animation.html">Governanace</a>
-                    <a class="collapse-item active" href="utilities-other.html">Keuangan Syariah</a>
+                    <a class="collapse-item" href="environmental.php">Eviromental</a>
+                    <a class="collapse-item" href="sosial.php">Sosial</a>
+                    <a class="collapse-item" href="governance.php">Governanace</a>
+                    <a class="collapse-item active" href="keuangan.php">Keuangan Syariah</a>
                 </div>
             </div>
         </li>
@@ -103,7 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <div class="topbar-divider d-none d-sm-block"></div>
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown"><span class="mr-2 d-none d-lg-inline text-gray-600 small">User UMKM</span>
-                            <img class="img-profile rounded-circle" src="img/undraw_profile.svg"></a>
+                            <img class="img-profile rounded-circle" src="../img/undraw_profile.svg"></a>
                     </li>
                 </ul>
             </nav>

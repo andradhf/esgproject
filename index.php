@@ -1,5 +1,5 @@
 <?php 
-include "config.php"; 
+include "config/config.php"; 
 session_start();
 
 // Cek apakah user sudah login
@@ -81,10 +81,10 @@ $syariah = $conn->query("SELECT SUM(pendapatan_halal) as total FROM data_keuanga
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Pilar ESG</h6>
-                        <a class="collapse-item" href="environmental.php">🌿 Environmental</a>
-                        <a class="collapse-item" href="sosial.php">👥 Sosial</a>
-                        <a class="collapse-item" href="governance.php">⚖️ Governance</a>
-                        <a class="collapse-item" href="keuangan.php">💰 Keuangan Syariah</a>
+                        <a class="collapse-item" href="Component/environmental.php">🌿 Environmental</a>
+                        <a class="collapse-item" href="Component/sosial.php">👥 Sosial</a>
+                        <a class="collapse-item" href="Component/governance.php">⚖️ Governance</a>
+                        <a class="collapse-item" href="Component/keuangan.php">💰 Keuangan Syariah</a>
                     </div>
                 </div>
             </li>
@@ -107,8 +107,8 @@ $syariah = $conn->query("SELECT SUM(pendapatan_halal) as total FROM data_keuanga
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Login Screens:</h6>
-                        <a class="collapse-item" href="login.php">Login</a>
-                        <a class="collapse-item" href="profile.php">Akun</a>
+                        <a class="collapse-item" href="Component/login.php">Login</a>
+                        <a class="collapse-item" href="Component/profile.php">Akun</a>
                 </div>
             </li>
 

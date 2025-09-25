@@ -1,5 +1,5 @@
 <?php
-include 'config.php'; // koneksi database
+include '../config/config.php'; // koneksi database
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $umkm_id = 1; // sementara fixed (nanti bisa ambil dari session user login)
@@ -66,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <title>SB Admin 2 - Border Utilities</title>
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-  <link href="css/sb-admin-2.min.css" rel="stylesheet">
+  <link href="../css/sb-admin-2.min.css" rel="stylesheet">
   <style>
     .bg-gradient-primary {
         background: linear-gradient(180deg, #1565c0 0%, #26a69a 100%) !important;
@@ -86,14 +86,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <div id="wrapper">
   <!-- Sidebar -->
   <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../index.php">
       <div class="sidebar-brand-icon">
-        <img src="img/logo_uhamka.png" alt="UHAMKA" style="width:70px; height:auto;">
+        <img src="../img/logo_uhamka.png" alt="UHAMKA" style="width:70px; height:auto;">
       </div>
       <div class="sidebar-brand-text mx-3"> ESG Syariah UMKM</div>
     </a>
     <hr class="sidebar-divider my-0">
-    <li class="nav-item"><a class="nav-link" href="index.html"><i class="fas fa-fw fa-th-large"></i><span>Dashboard</span></a></li>
+    <li class="nav-item"><a class="nav-link" href="../index.php"><i class="fas fa-fw fa-th-large"></i><span>Dashboard</span></a></li>
     <hr class="sidebar-divider">
     <li class="nav-item active">
       <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
@@ -102,10 +102,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <div id="collapseUtilities" class="collapse show" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
           <h6 class="collapse-header">Pilar ESG:</h6>
-          <a class="collapse-item" href="utilities-color.html">🌿 Enviromental</a>
-          <a class="collapse-item active" href="utilities-border.php">👥 Sosial</a>
-          <a class="collapse-item" href="utilities-animation.html"> ⚖️ Governance</a>
-          <a class="collapse-item" href="utilities-other.html">💰 Keuangan Syariah</a>
+          <a class="collapse-item" href="environmental.php">🌿 Enviromental</a>
+          <a class="collapse-item active" href="sosial.php">👥 Sosial</a>
+          <a class="collapse-item" href="governance.php"> ⚖️ Governance</a>
+          <a class="collapse-item" href="keuangan.php">💰 Keuangan Syariah</a>
         </div>
       </div>
     </li>

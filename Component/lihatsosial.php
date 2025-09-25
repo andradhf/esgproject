@@ -1,5 +1,5 @@
 <?php
-include "config.php";
+include "../config/config.php";
 
 $sql = "SELECT * FROM data_sosial ORDER BY id DESC LIMIT 1";
 $result = $conn->query($sql);

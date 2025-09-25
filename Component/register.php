@@ -1,5 +1,5 @@
 <?php
-include "config.php"; // koneksi database
+include "../config/config.php"; // koneksi database
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
