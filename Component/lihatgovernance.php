@@ -1,6 +1,6 @@
 <?php
 
-include 'config.php';
+include '../config/config.php';
 
 // ambil cuma data terakhir
 $result = $conn->query("SELECT * FROM data_governance ORDER BY id DESC LIMIT 1");

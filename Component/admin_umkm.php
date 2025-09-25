@@ -1,5 +1,5 @@
 <?php
-include 'koneksi.php';
+include 'config.php';
 session_start();
 
 // cek role admin
