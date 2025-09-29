@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Jika role = admin → admin_dashboard.php
             if ($user['role'] === "admin") {
-                header("Location: admin_dashboard.php");
+                header("Location: dashboard.php");
                 exit;
             }
 
