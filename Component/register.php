@@ -80,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="utf-8">
     <title>SB Admin 2 - Register</title>
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
 </head>
 
 <body class="bg-gradient-primary">
@@ -123,10 +123,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </div>
                             <button type="submit" class="btn btn-primary btn-user btn-block">Register Account</button>
                             <hr>
-                            <a href="index.html" class="btn btn-google btn-user btn-block">
+                            <a href="../index.php" class="btn btn-google btn-user btn-block">
                                 <i class="fab fa-google fa-fw"></i> Register with Google
                             </a>
-                            <a href="index.html" class="btn btn-facebook btn-user btn-block">
+                            <a href="../index.php" class="btn btn-facebook btn-user btn-block">
                                 <i class="fab fa-facebook-f fa-fw"></i> Register with Facebook
                             </a>
                         </form>

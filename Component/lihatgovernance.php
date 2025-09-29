@@ -1,10 +1,20 @@
 <?php
-
 include '../config/config.php';
+session_start();
+
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
+    header("Location: login.php");
+    exit;
+}
+
+if (!isset($_SESSION['umkm_id'])) {
+    die("Error: umkm_id belum diset di session.");
+}
+
+$umkm_id = $_SESSION['umkm_id'];
 
 // ambil cuma data terakhir
 $result = $conn->query("SELECT * FROM data_governance ORDER BY id DESC LIMIT 1");
-
 $row = $result && $result->num_rows > 0 ? $result->fetch_assoc() : null;
 
 $score = 0;
@@ -34,8 +44,29 @@ if ($row) {
     }
 }
 
+// cek apakah umkm_id sudah ada di laporan_esg
+$cek = $conn->prepare("SELECT id FROM laporan_esg WHERE umkm_id = ?");
+$cek->bind_param("i", $umkm_id);
+$cek->execute();
+$cek->store_result();
+
+if ($cek->num_rows > 0) {
+    // sudah ada → update
+    $stmt = $conn->prepare("UPDATE laporan_esg SET gov = ? WHERE umkm_id = ?");
+    $stmt->bind_param("ii", $persen, $umkm_id);
+} else {
+    // belum ada → insert
+    $stmt = $conn->prepare("INSERT INTO laporan_esg (umkm_id, gov) VALUES (?, ?)");
+    $stmt->bind_param("ii", $umkm_id, $persen);
+}
+
+$stmt->execute();
+$stmt->close();
+$cek->close();
+
 $conn->close();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="id">

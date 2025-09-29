@@ -1,8 +1,22 @@
 <?php
 include "../config/config.php";
+session_start();
+
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
+    header("Location: login.php");
+    exit;
+}
+
+if (!isset($_SESSION['umkm_id'])) {
+    die("Error: umkm_id belum diset di session.");
+}
+
+$umkm_id = $_SESSION['umkm_id'];
 
 $sql = "SELECT * FROM data_keuangan ORDER BY id DESC LIMIT 1";
 $result = $conn->query($sql);
+
+
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -71,6 +85,24 @@ $result = $conn->query($sql);
     } else {
         echo "<p>Belum ada data.</p>";
     }
+    $cek = $conn->prepare("SELECT id FROM laporan_esg WHERE umkm_id = ?");
+    $cek->bind_param("i", $umkm_id);
+    $cek->execute();
+    $cek->store_result();
+
+    if ($cek->num_rows > 0) {
+        // sudah ada → update
+        $stmt = $conn->prepare("UPDATE laporan_esg SET keu = ? WHERE umkm_id = ?");
+        $stmt->bind_param("ii", $total_skor, $umkm_id);
+    } else {
+        // belum ada → insert
+        $stmt = $conn->prepare("INSERT INTO laporan_esg (umkm_id, keu) VALUES (?, ?)");
+        $stmt->bind_param("ii", $umkm_id, $total_skor);
+    }
+
+    $stmt->execute();
+    $stmt->close();
+    $cek->close();
     $conn->close();
     ?>
 </div>

@@ -42,6 +42,17 @@ $score_limbah = nilai($limbah, 50, 500);
 $score_bahan = nilai($bahan, 80, 50, true);
 
 $total = ($score_listrik + $score_air + $score_limbah + $score_bahan) / 4;
+
+$stmt = $conn->prepare("
+    INSERT INTO laporan_esg (umkm_id, env) 
+    VALUES (?, ?)
+    ON DUPLICATE KEY UPDATE env = VALUES(env)
+");
+$stmt->bind_param("ii", $umkm_id, $total);
+$stmt->execute();
+$stmt->close();
+
+$conn->close();
 ?>
 <!DOCTYPE html>
 <html>
