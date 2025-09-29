@@ -40,13 +40,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $umkm = $stmt_umkm->get_result()->fetch_assoc();
                 $_SESSION['umkm_id'] = $umkm['id'] ?? null;
 
-                header("Location: index.php");
+                header("Location: ../index.php");
                 exit;
             }
 
             // Jika role = admin → admin_dashboard.php
             if ($user['role'] === "admin") {
-                header("Location: admin_dashboard.php");
+                header("Location: dashboard.php");
                 exit;
             }
 
@@ -67,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="utf-8">
     <title>Monitoring ESG - Login</title>
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
     <style>
         body {
             background: linear-gradient(135deg, #3fab0e, #0096c7);
@@ -87,10 +87,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <!-- Logo -->
     <div style="position:absolute; top:20px; left:20px; z-index:1000;">
-        <img src="img/logo_uhamka.png" alt="Logo UHAMKA" style="height:100px;">
+        <img src="../img/logo_uhamka.png" alt="Logo UHAMKA" style="height:100px;">
     </div>
     <div style="position:absolute; top:20px; right:20px; z-index:1000;">
-        <img src="img/logo_kemendikbud.png" alt="Logo ESG" style="height:70px;">
+        <img src="../img/logo_kemendikbud.png" alt="Logo ESG" style="height:70px;">
     </div>
 
     <div class="container">
@@ -100,7 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="card-body p-0">
                         <div class="row">
                             <div class="col-lg-6 d-none d-lg-block bg-login-image"
-                                style="background:url('img/esg_bg.jpg'); background-size:cover; border-radius:10px 0 0 10px;">
+                                style="background:url('../img/esg_bg.jpg'); background-size:cover; border-radius:10px 0 0 10px;">
                             </div>
                             <div class="col-lg-6">
                                 <div class="p-5">
