@@ -156,102 +156,272 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <meta name="description" content="">
   <meta name="author" content="">
   <title>Monitoring ESG - SOSIAL</title>
-  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
   <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <style>
-    .bg-gradient-primary {
-        background: linear-gradient(180deg, #1565c0 0%, #26a69a 100%) !important;
-    }
-    body { font-family: Arial, sans-serif; margin: 20px; background: #f9f9f9; }
-    h2 { font-size: 18px; margin-top: 20px; color: #333; }
-    .section { background: #fff; padding: 15px; margin-bottom: 15px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-    label { display: block; margin: 6px 0 3px; }
-    input[type="text"], input[type="number"] { width: 200px; padding: 6px; margin-bottom: 8px; border: 1px solid #ccc; border-radius: 4px; }
-    input[type="text"]:focus, input[type="number"]:focus { outline: none; border-color: #26a69a; }
-    .checkbox-group { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
-    .submit-btn { background: #00796b; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; margin-top: 20px; font-size: 16px; }
-    .submit-btn:hover { background: #005f56; }
-    .alert {
-        padding: 15px;
-        margin-bottom: 20px;
-        border-radius: 5px;
-        font-size: 14px;
-    }
-    .alert-success {
-        background-color: #d4edda;
-        color: #155724;
-        border: 1px solid #c3e6cb;
-    }
-    .alert-error {
-        background-color: #f8d7da;
-        color: #721c24;
-        border: 1px solid #f5c6cb;
-    }
-    .alert-info {
-        background-color: #d1ecf1;
-        color: #0c5460;
-        border: 1px solid #bee5eb;
-    }
-    .update-badge {
-        display: inline-block;
-        background-color: #17a2b8;
-        color: white;
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-size: 12px;
-        margin-left: 10px;
-    }
-    .info-box {
-        background-color: #f8f9fa;
-        padding: 10px 15px;
-        border-left: 4px solid #17a2b8;
-        margin-bottom: 15px;
-        font-size: 13px;
-        color: #666;
-    }
-    .info-box strong {
-        color: #333;
-    }
+    /* === FIX GAP DEKAT SIDEBAR & TOPBAR === */
+/* === FIX GAP DEKAT SIDEBAR === */
+body {
+    margin: 0 !important;
+    padding: 0 !important;
+    font-family: Arial, sans-serif;
+    background: #f9f9f9;
+}
+
+#wrapper {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+#content-wrapper {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+#content {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Hanya konten utama yang rapat, tidak mengubah navbar */
+.container-fluid {
+    margin: 0 !important;
+    padding: 15px !important;
+}
+
+/* === SIDEBAR COLOR === */
+.bg-gradient-primary {
+    background: linear-gradient(180deg, #1565c0 0%, #26a69a 100%) !important;
+}
+
+/* === FORM & SECTION === */
+h2 {
+    font-size: 18px;
+    margin-top: 0px;
+    color: #333;
+}
+
+.section {
+    background: #fff;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+label {
+    display: block;
+    margin: 6px 0 3px;
+}
+
+input[type="text"],
+input[type="number"] {
+    width: 200px;
+    padding: 6px;
+    margin-bottom: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+    outline: none;
+    border-color: #26a69a;
+}
+
+.checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+/* === BUTTON === */
+.submit-btn {
+    background: #00796b;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+.submit-btn:hover {
+    background: #005f56;
+}
+
+/* === ALERTS === */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.alert-info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+/* === BADGE UPDATE MODE === */
+.update-badge {
+    display: inline-block;
+    background-color: #17a2b8;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    margin-left: 10px;
+}
+
+/* === INFO BOX === */
+.info-box {
+    background-color: #f8f9fa;
+    padding: 10px 15px;
+    border-left: 4px solid #17a2b8;
+    margin-bottom: 15px;
+    font-size: 13px;
+    color: #666;
+}
+
+.info-box strong {
+    color: #333;
+}
   </style>
 </head>
 <body id="page-top">
 
 <div id="wrapper">
   <!-- Sidebar -->
-  <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../index.php">
-      <div class="sidebar-brand-icon">
-        <img src="../img/logo_uhamka.png" alt="UHAMKA" style="width:70px; height:auto;">
-      </div>
-      <div class="sidebar-brand-text mx-3"> ESG Syariah UMKM</div>
-    </a>
-    <hr class="sidebar-divider my-0">
-    <li class="nav-item"><a class="nav-link" href="../index.php"><i class="fas fa-fw fa-th-large"></i><span>Dashboard</span></a></li>
-    <hr class="sidebar-divider">
-    <li class="nav-item active">
-      <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-        <i class="fas fa-fw fa-leaf"></i><span>Pilar ESG</span>
-      </a>
-      <div id="collapseUtilities" class="collapse show" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-        <div class="bg-white py-2 collapse-inner rounded">
-          <h6 class="collapse-header">Pilar ESG:</h6>
-          <a class="collapse-item" href="environmental.php">🌿 Enviromental</a>
-          <a class="collapse-item active" href="sosial.php">👥 Sosial</a>
-          <a class="collapse-item" href="governance.php"> ⚖️ Governance</a>
-          <a class="collapse-item" href="keuangan.php">💰 Keuangan Syariah</a>
-        </div>
-      </div>
-    </li>
-    <li class="nav-item"><a class="nav-link" href="maqasid_syariah.php"><i class="fas fa-balance-scale"></i><span>Maqasid Syariah</span></a></li>
-    <hr class="sidebar-divider d-none d-md-block">
-  </ul>
+   <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../index.php">
+                <div class="sidebar-brand-icon">
+                    <img src="../img/logo_uhamka.png" alt="UHAMKA" style="width:70px; height:auto;">
+                </div>
+                <div class="sidebar-brand-text mx-3">ESG Syariah UMKM</div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="../index.php">
+                    <i class="fas fa-fw fa-th-large"></i>
+                    <span>Dashboard</span></a>
+            </li>
+
+            <!-- Nav Item - Pilar ESG -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                    aria-expanded="false" aria-controls="collapseUtilities">
+                    <i class="fas fa-fw fa-leaf"></i>
+                    <span>Pilar ESG</span>
+                </a>
+                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Pilar ESG</h6>
+                        <a class="collapse-item" href="environmental.php">🌿 Environmental</a>
+                        <a class="collapse-item" href="sosial.php">👥 Sosial</a>
+                        <a class="collapse-item" href="governance.php">⚖️ Governance</a>
+                        <a class="collapse-item" href="keuangan.php">💰 Keuangan Syariah</a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Nav Item - Maqasid Syariah -->
+            <li class="nav-item">
+                <a class="nav-link" href="maqasid_syariah.php">
+                    <i class="fas fa-balance-scale"></i>
+                    <span>Maqasid Syariah</span>
+                </a>
+            </li>
+
+             <!-- Nav Item - Setting -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+                    aria-expanded="false" aria-controls="collapsePages">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Setting</span>
+                </a>
+                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">User Menu:</h6>
+                        <?php if (isset($_SESSION['user_id'])): ?>
+                            <!-- Kalau sudah login -->
+                            <a class="collapse-item" href="profile.php">Akun</a>
+                            <a class="collapse-item" href="logout.php">Logout</a>
+                        <?php else: ?>
+                            <!-- Kalau belum login -->
+                            <a class="collapse-item" href="/login.php">Login</a>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+            <!-- Motto -->
+            <div class="sidebar-brand d-flex align-items-center justify-content-">
+                <div style="font-size:12px; color:#dbeffa; margin-top:4px;">
+                    "Membangun UMKM Berkelanjutan dengan Prinsip ESG Syariah"
+                </div>
+            </div>
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
+                <div class="sidebar-brand-icon">
+                    <img src="../img/logo_kemendikbud.png" alt="Kemendikbud" style="width:150px; height:auto;">
+                </div>
+            </a>
+        </ul>
   <!-- End of Sidebar -->
 
   <!-- Content Wrapper -->
   <div id="content-wrapper" class="d-flex flex-column">
     <div id="content">
-      <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"></nav>
+        <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 shadow">
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <ul class="navbar-nav ml-auto">
+                        <div class="topbar-divider d-none d-sm-block"></div>
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                                    <?php echo htmlspecialchars($_SESSION['username']); ?>
+                                </span>
+                                <i class="fa-solid fa-user"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- End of Topbar -->
       <div class="container-fluid">
         <h1 class="h3 mb-1 text-gray-800">
           SOSIAL
@@ -418,9 +588,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   </div>
 </div>
 
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-<script src="js/sb-admin-2.min.js"></script>
+<script src="../vendor/jquery/jquery.min.js"></script>
+<script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="../js/sb-admin-2.min.js"></script>
 </body>
 </html>

@@ -71,10 +71,12 @@ if (count($labels) > 12) {
     <title>Monitoring ESG - Dashboard</title>
 
     <!-- Custom fonts for this template-->
-    <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
+    <!-- Font Awesome 6 (latest) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
@@ -140,7 +142,7 @@ if (count($labels) > 12) {
                 </a>
             </li>
 
-            <!-- Nav Item - Setting -->
+             <!-- Nav Item - Setting -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
                     aria-expanded="false" aria-controls="collapsePages">
@@ -149,9 +151,16 @@ if (count($labels) > 12) {
                 </a>
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Login Screens:</h6>
-                        <a class="collapse-item" href="Component/login.php">Login</a>
-                        <a class="collapse-item" href="Component/profile.php">Akun</a>
+                        <h6 class="collapse-header">User Menu:</h6>
+                        <?php if (isset($_SESSION['user_id'])): ?>
+                            <!-- Kalau sudah login -->
+                            <a class="collapse-item" href="Component/profile.php">Akun</a>
+                            <a class="collapse-item" href="Component/logout.php">Logout</a>
+                        <?php else: ?>
+                            <!-- Kalau belum login -->
+                            <a class="collapse-item" href="/login.php">Login</a>
+                        <?php endif; ?>
+                    </div>
                 </div>
             </li>
 

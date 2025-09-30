@@ -1,3 +1,13 @@
+<?php
+session_start();
+include "../config/config.php";
+
+// Cek login
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
+    header("Location: ../login.php");
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,13 +21,14 @@
     <title>ESG Syariah - Maqasid Syariah</title>
 
     <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <!-- Override warna sidebar -->
     <style>
@@ -62,69 +73,72 @@
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-        <!-- Sidebar -->
+         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-            
+
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../index.php">
                 <div class="sidebar-brand-icon">
-                    <img src="img/logo_uhamka.png" alt="UHAMKA" style="width:70px; height:auto;">
+                    <img src="../img/logo_uhamka.png" alt="UHAMKA" style="width:70px; height:auto;">
                 </div>
-                <div class="sidebar-brand-text mx-3"> ESG Syariah UMKM</div>
+                <div class="sidebar-brand-text mx-3">ESG Syariah UMKM</div>
             </a>
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item">
-                <a class="nav-link" href="index.html">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
+            <li class="nav-item active">
+                <a class="nav-link" href="../index.php">
+                    <i class="fas fa-fw fa-th-large"></i>
                     <span>Dashboard</span></a>
             </li>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Nav Item - Utilities Collapse Menu -->
+            <!-- Nav Item - Pilar ESG -->
             <li class="nav-item">
-                <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-wrench"></i>
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                    aria-expanded="false" aria-controls="collapseUtilities">
+                    <i class="fas fa-fw fa-leaf"></i>
                     <span>Pilar ESG</span>
                 </a>
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Pilar ESG:</h6>
-                        <a class="collapse-item" href="utilities-color.html">Enviromental</a>
-                        <a class="collapse-item" href="utilities-border.html">Sosial</a>
-                        <a class="collapse-item" href="utilities-animation.html">Governance</a>
-                        <a class="collapse-item" href="utilities-other.html">Keuangan Syariah</a>
+                        <h6 class="collapse-header">Pilar ESG</h6>
+                        <a class="collapse-item" href="environmental.php">🌿 Environmental</a>
+                        <a class="collapse-item" href="sosial.php">👥 Sosial</a>
+                        <a class="collapse-item" href="governance.php">⚖️ Governance</a>
+                        <a class="collapse-item" href="keuangan.php">💰 Keuangan Syariah</a>
                     </div>
                 </div>
             </li>
 
-            <!-- Tambahan menu Maqasid Syariah -->
-            <li class="nav-item active">
+            <!-- Nav Item - Maqasid Syariah -->
+            <li class="nav-item">
                 <a class="nav-link" href="maqasid_syariah.php">
                     <i class="fas fa-balance-scale"></i>
                     <span>Maqasid Syariah</span>
                 </a>
             </li>
 
-            <!-- Nav Item - Pages Collapse Menu -->
+             <!-- Nav Item - Setting -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-                    aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fas fa-fw fa-folder"></i>
+                    aria-expanded="false" aria-controls="collapsePages">
+                    <i class="fas fa-fw fa-cog"></i>
                     <span>Setting</span>
                 </a>
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Login Screens:</h6>
-                        <a class="collapse-item" href="login.html">Login</a>
-                        <a class="collapse-item" href="profile.html">Akun</a>
+                        <h6 class="collapse-header">User Menu:</h6>
+                        <?php if (isset($_SESSION['user_id'])): ?>
+                            <!-- Kalau sudah login -->
+                            <a class="collapse-item" href="profile.php">Akun</a>
+                            <a class="collapse-item" href="logout.php">Logout</a>
+                        <?php else: ?>
+                            <!-- Kalau belum login -->
+                            <a class="collapse-item" href="/login.php">Login</a>
+                        <?php endif; ?>
                     </div>
                 </div>
             </li>
@@ -137,6 +151,17 @@
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
 
+            <!-- Motto -->
+            <div class="sidebar-brand d-flex align-items-center justify-content-">
+                <div style="font-size:12px; color:#dbeffa; margin-top:4px;">
+                    "Membangun UMKM Berkelanjutan dengan Prinsip ESG Syariah"
+                </div>
+            </div>
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
+                <div class="sidebar-brand-icon">
+                    <img src="../img/logo_kemendikbud.png" alt="Kemendikbud" style="width:150px; height:auto;">
+                </div>
+            </a>
         </ul>
         <!-- End of Sidebar -->
 
@@ -145,21 +170,30 @@
 
             <!-- Main Content -->
             <div id="content">
-
                 <!-- Topbar -->
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 shadow">
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
                     </button>
                     <ul class="navbar-nav ml-auto">
                         <div class="topbar-divider d-none d-sm-block"></div>
                         <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">User UMKM</span>
-                                <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                                    <?php echo htmlspecialchars($_SESSION['username']); ?>
+                                </span>
+                                <i class="fa-solid fa-user"></i>
                             </a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- End of Topbar -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <ul class="navbar-nav ml-auto">
+                        <div class="topbar-divider d-none d-sm-block"></div>
+                        <li class="nav-item dropdown no-arrow">
                         </li>
                     </ul>
                 </nav>
@@ -205,9 +239,9 @@
     </a>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="js/sb-admin-2.min.js"></script>
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="../js/sb-admin-2.min.js"></script>
 </body>
 </html>
