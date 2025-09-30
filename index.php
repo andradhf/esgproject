@@ -16,6 +16,49 @@ $sos = $conn->query("SELECT SUM(karyawan) as total FROM data_sosial WHERE umkm_i
 $gov = $conn->query("SELECT COUNT(*) as total FROM data_governance WHERE umkm_id = $umkm_id")->fetch_assoc()['total'] ?? 0; 
 $syariah = $conn->query("SELECT SUM(pendapatan_halal) as total FROM data_keuangan WHERE umkm_id = $umkm_id")->fetch_assoc()['total'] ?? 0;
 
+// query ambil env, sos, gov, keu terbaru berdasarkan umkm_id
+$sql = "SELECT env, sos, gov, keu 
+        FROM laporan_esg 
+        WHERE umkm_id = ? 
+        ORDER BY id DESC 
+        LIMIT 1";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $umkm_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+// default nilai 0 biar tidak error kalau belum ada data
+$env = $sos = $gov = $keu = 0;
+
+if ($row = $result->fetch_assoc()) {
+    $env = $row['env'];
+    $sos = $row['sos'];
+    $gov = $row['gov'];
+    $keu = $row['keu'];
+}
+$labels = [];
+$scores = [];
+
+$sql = "SELECT DATE(created_at) AS tanggal, AVG(avg_score) AS rata2
+        FROM laporan_esg
+        WHERE umkm_id = ?
+        GROUP BY DATE(created_at)
+        ORDER BY DATE(created_at)";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $umkm_id);
+$stmt->execute();
+$res = $stmt->get_result();
+
+while ($row = $res->fetch_assoc()) {
+    $labels[] = $row['tanggal'];
+    $scores[] = round($row['rata2'], 2);
+}
+
+// ambil 12 terakhir aja
+if (count($labels) > 12) {
+    $labels = array_slice($labels, -12);
+    $scores = array_slice($scores, -12);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,7 +71,7 @@ $syariah = $conn->query("SELECT SUM(pendapatan_halal) as total FROM data_keuanga
     <title>Monitoring ESG - Dashboard</title>
 
     <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
@@ -91,7 +134,7 @@ $syariah = $conn->query("SELECT SUM(pendapatan_halal) as total FROM data_keuanga
 
             <!-- Nav Item - Maqasid Syariah -->
             <li class="nav-item">
-                <a class="nav-link" href="maqasid_syariah.php">
+                <a class="nav-link" href="Component/maqasid_syariah.php">
                     <i class="fas fa-balance-scale"></i>
                     <span>Maqasid Syariah</span>
                 </a>
@@ -152,6 +195,7 @@ $syariah = $conn->query("SELECT SUM(pendapatan_halal) as total FROM data_keuanga
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
                                     <?php echo htmlspecialchars($_SESSION['username']); ?>
                                 </span>
+                                <i class="fa-solid fa-user"></i>
                             </a>
                         </li>
                     </ul>
@@ -173,7 +217,7 @@ $syariah = $conn->query("SELECT SUM(pendapatan_halal) as total FROM data_keuanga
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 Environmental</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                $<?php echo number_format($env, 0); ?>
+                                                <?php echo number_format($env, 0); ?>
                                             </div>
                                         </div>
                                         <div class="col-auto">
@@ -193,7 +237,7 @@ $syariah = $conn->query("SELECT SUM(pendapatan_halal) as total FROM data_keuanga
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                 Sosial</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                $<?php echo number_format($sos, 0); ?>
+                                                <?php echo number_format($sos, 0); ?>
                                             </div>
                                         </div>
                                         <div class="col-auto">
@@ -233,7 +277,7 @@ $syariah = $conn->query("SELECT SUM(pendapatan_halal) as total FROM data_keuanga
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                                 Keuangan Syariah</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <?php echo number_format($syariah, 0); ?>
+                                                <?php echo number_format($keu, 0); ?>
                                             </div>
                                         </div>
                                         <div class="col-auto">
@@ -321,9 +365,9 @@ $syariah = $conn->query("SELECT SUM(pendapatan_halal) as total FROM data_keuanga
         var myLineChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"],
+               labels: <?= json_encode($labels) ?>,
                 datasets: [{
-                    label: "Total ESG",
+                    label: "Rata-rata ESG Harian",
                     lineTension: 0.3,
                     backgroundColor: "rgba(78, 115, 223, 0.05)",
                     borderColor: "rgba(78, 115, 223, 1)",
@@ -334,21 +378,18 @@ $syariah = $conn->query("SELECT SUM(pendapatan_halal) as total FROM data_keuanga
                     pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
                     pointHitRadius: 10,
                     pointBorderWidth: 2,
-                    data: [<?php echo $env + $sos + $gov + $syariah; ?>, 6000, 8000, 7000, 12000, 15000, 14000, 17000, 19000, 22000, 24000, 25000],
+                    data: <?= json_encode($scores) ?>,
                 }],
             },
             options: {
                 maintainAspectRatio: false,
                 scales: {
-                    xAxes: [{
-                        gridLines: { display: false, drawBorder: false },
-                        ticks: { maxTicksLimit: 12 }
-                    }],
-                    yAxes: [{
+                   yAxes: [{
                         ticks: {
-                            maxTicksLimit: 5,
-                            padding: 10,
-                            callback: function(value) { return '$' + value; }
+                            beginAtZero: true,
+                            max: 100,   // supaya skala mentok 100
+                            stepSize: 20,
+                            callback: function(value) { return value; }
                         },
                         gridLines: {
                             color: "rgb(234, 236, 244)",

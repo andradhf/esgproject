@@ -66,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         } else {
             // INSERT data baru
             $stmt = $conn->prepare("INSERT INTO environmental (umkm_id, listrik, air, limbah, bahan_baku, hifzmal, hifzmal2, hifznafs, hifzdin, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
-            $stmt->bind_param("iddddiiiii", $umkm_id, $listrik, $air, $limbah, $bahan, $hifzmal, $hifzmal2, $hifznafs, $hifzdin);
+            $stmt->bind_param("idddiiiii", $umkm_id, $listrik, $air, $limbah, $bahan, $hifzmal, $hifzmal2, $hifznafs, $hifzdin);
             $stmt->execute();
             
             if ($stmt->affected_rows > 0) {

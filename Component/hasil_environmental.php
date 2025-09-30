@@ -43,17 +43,29 @@ $score_bahan = nilai($bahan, 80, 50, true);
 
 $total = ($score_listrik + $score_air + $score_limbah + $score_bahan) / 4;
 
-$stmt = $conn->prepare("
-    INSERT INTO laporan_esg (umkm_id, env) 
-    VALUES (?, ?)
-    ON DUPLICATE KEY UPDATE env = VALUES(env)
-");
-$stmt->bind_param("ii", $umkm_id, $total);
+// cek apakah umkm_id sudah ada di laporan_esg
+$cek = $conn->prepare("SELECT id FROM laporan_esg WHERE umkm_id = ?");
+$cek->bind_param("i", $umkm_id);
+$cek->execute();
+$cek->store_result();
+
+if ($cek->num_rows > 0) {
+    // sudah ada → update
+    $stmt = $conn->prepare("UPDATE laporan_esg SET env = ? WHERE umkm_id = ?");
+    $stmt->bind_param("ii", $total, $umkm_id);
+} else {
+    // belum ada → insert
+    $stmt = $conn->prepare("INSERT INTO laporan_esg (umkm_id, env) VALUES (?, ?)");
+    $stmt->bind_param("ii", $umkm_id, $total);
+}
+
 $stmt->execute();
 $stmt->close();
+$cek->close();
 
 $conn->close();
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
