@@ -69,6 +69,8 @@ $conn->close();
 <!DOCTYPE html>
 <html>
 <head>
+<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="../css/sb-admin-2.min.css" rel="stylesheet">
     <title>Data Environmental</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -151,7 +153,12 @@ $conn->close();
     <div class="chart-container">
         <canvas id="envChart"></canvas>
     </div>
-
+    <div class="mb-3">
+    <button onclick="window.history.back()" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Back
+    </button>
+    </div>
+    
     <script>
         const ctx = document.getElementById('envChart').getContext('2d');
         const envChart = new Chart(ctx, {

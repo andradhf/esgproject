@@ -3,11 +3,15 @@ include "../config/config.php";
 session_start();
 
 // Cek login
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+// Pastikan user sudah login dan role = admin
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+    // jika bukan admin, redirect ke login
     header("Location: login.php");
     exit;
 }
 
+// Simpan role ke variabel (opsional)
+$role = $_SESSION['role'];
 // Hitung total UMKM
 $total_umkm = 0;
 $res = $conn->query("SELECT COUNT(*) AS total FROM umkm_accounts");
@@ -118,7 +122,9 @@ while ($row = $res->fetch_assoc()) {
   <a href="#" class="active" onclick="showPage('dashboard', event)">🏠 Dashboard</a>
   <a href="#" onclick="showPage('dataumkm', event)">🏪 Data UMKM</a>
   <a href="#" onclick="showPage('reports', event)">📑 Reports</a>
-  <a class="collapse-item" href="login.php">⚙️ Login</a>
+  <?php if (isset($_SESSION['user_id'])): ?>
+  <a class="collapse-item" href="logout.php">⚙️ Logout</a>
+  <?php endif; ?>
 </div>
 
 <!-- Main Content -->

@@ -72,6 +72,8 @@ $conn->close();
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
     <title>Data Governance</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -166,6 +168,11 @@ $conn->close();
     <div style="width: 300px; height: 300px; margin: auto;">
         <canvas id="governanceChart"></canvas>
     </div>
+</div>
+<div class="mb-3">
+    <button onclick="window.history.back()" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Back
+    </button>
 </div>
 
 <script>
