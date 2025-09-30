@@ -22,6 +22,8 @@ $result = $conn->query($sql);
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
     <title>Hasil Penilaian Keuangan Syariah</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(to right, #83a4d4, #b6fbff); margin: 0; padding: 40px; }
@@ -106,5 +108,10 @@ $result = $conn->query($sql);
     $conn->close();
     ?>
 </div>
+<div class="mb-3">
+    <button onclick="window.history.back()" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Back
+    </button>
+    </div>
 </body>
 </html>

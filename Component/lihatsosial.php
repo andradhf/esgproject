@@ -74,6 +74,8 @@ $cek->close();
 <html lang="id">
 <head>
   <meta charset="UTF-8">
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="../css/sb-admin-2.min.css" rel="stylesheet">
   <title>Data Sosial</title>
   <style>
     body { font-family: Arial, sans-serif; background: #f0f9ff; padding: 30px; }
@@ -133,7 +135,11 @@ if ($row) {
   <h3>Penilaian Maqasid</h3>
   <span class="highlight"><?= $kategori_maqasid ?></span>
 </div>
-
+<div class="mb-3">
+    <button onclick="window.history.back()" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Back
+    </button>
+    </div>
 </body>
 </html>
 <?php $conn->close(); ?>
