@@ -29,16 +29,29 @@ if ($res2 && $row2 = $res2->fetch_assoc()) {
 // Grafik tren ESG
 $labels = [];
 $data_scores = [];
-$sql = "SELECT DATE(created_at) AS tanggal, AVG(avg_score) AS rata2
-        FROM laporan_esg
-        GROUP BY DATE(created_at)
-        ORDER BY DATE(created_at)";
+
+$sql = "SELECT DATE(dc.timestamp) AS tanggal, AVG(dc.avg_score) AS rata2
+        FROM (
+            SELECT dc.*
+            FROM data_chart dc
+            JOIN (
+                SELECT laporan_id, DATE(timestamp) AS tgl, MAX(timestamp) AS latest_ts
+                FROM data_chart
+                GROUP BY laporan_id, DATE(timestamp)
+            ) latest
+            ON dc.laporan_id = latest.laporan_id 
+               AND DATE(dc.timestamp) = latest.tgl
+               AND dc.timestamp = latest.latest_ts
+        ) dc
+        GROUP BY DATE(dc.timestamp)
+        ORDER BY DATE(dc.timestamp)";
+
 $res = $conn->query($sql);
+
 while ($row = $res->fetch_assoc()) {
     $labels[] = $row['tanggal'];
     $data_scores[] = round($row['rata2'], 2);
 }
-
 // Data UMKM + laporan ESG + maqasid
 $sql = "
     SELECT u.id, u.nama_umkm, u.created_at,
