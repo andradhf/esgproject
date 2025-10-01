@@ -36,18 +36,32 @@ if ($row = $result->fetch_assoc()) {
     $gov = $row['gov'];
     $keu = $row['keu'];
 }
-$labels = [];
-$scores = [];
 
-$sql = "SELECT DATE(created_at) AS tanggal, AVG(avg_score) AS rata2
-        FROM laporan_esg
-        WHERE umkm_id = ?
-        GROUP BY DATE(created_at)
-        ORDER BY DATE(created_at)";
+
+$sql = "
+    SELECT sub.tanggal, sub.avg_score AS rata2
+    FROM (
+        SELECT DATE(dc.timestamp) AS tanggal,
+               dc.avg_score,
+               ROW_NUMBER() OVER (
+                   PARTITION BY le.umkm_id, DATE(dc.timestamp)
+                   ORDER BY dc.timestamp DESC
+               ) AS rn
+        FROM data_chart dc
+        INNER JOIN laporan_esg le ON dc.laporan_id = le.id
+        WHERE le.umkm_id = ?
+    ) AS sub
+    WHERE sub.rn = 1
+    ORDER BY sub.tanggal;
+";
+
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $umkm_id);
 $stmt->execute();
 $res = $stmt->get_result();
+
+$labels = [];
+$scores = [];
 
 while ($row = $res->fetch_assoc()) {
     $labels[] = $row['tanggal'];
