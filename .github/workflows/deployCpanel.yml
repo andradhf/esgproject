@@ -14,7 +14,7 @@ jobs:
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
-        server: umkmesgreporting.com
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
+        server: ${{ secrets.ftp_server}}
+        username: ${{ secrets.ftp_username }}
+        password: ${{ secrets.ftp_password}}
         server-dir: /public_html/
