@@ -106,6 +106,7 @@ if (count($labels) > 12) {
 <body id="page-top">
 
     <!-- Page Wrapper -->
+     
     <div id="wrapper">
 
         <!-- Sidebar -->
