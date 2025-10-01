@@ -81,54 +81,61 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>SB Admin 2 - Register</title>
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+    <style>
+        .bg-gradient-primary {
+            background: linear-gradient(90deg, #0096c7, #38b000);
+        }
+
+        /* Kolom gambar */
+        .bg-register-image {
+            background: url('../img/esg_bg.jpg') center center;
+            background-size: cover;
+            border-radius: 10px 0 0 10px;
+        }
+    </style>
 </head>
 
 <body class="bg-gradient-primary">
 
-<div class="container">
+<div class="container" style="margin-top: 120px;">
     <div class="card o-hidden border-0 shadow-lg my-5">
         <div class="card-body p-0">
             <div class="row">
+                <!-- AREA GAMBAR -->
                 <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
-                <div class="col-lg-7">
+
+                <!-- FORM REGISTER -->
+                <div class="col-lg-7" style="padding-top: 50px;">
                     <div class="p-5">
                         <div class="text-center">
                             <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
                         </div>
-                        <!-- FORM REGISTER -->
                         <form class="user" action="register.php" method="post">
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
                                     <input type="text" name="first_name" class="form-control form-control-user"
-                                        placeholder="First Name" required>
+                                           placeholder="First Name" required>
                                 </div>
                                 <div class="col-sm-6">
                                     <input type="text" name="last_name" class="form-control form-control-user"
-                                        placeholder="Last Name">
+                                           placeholder="Last Name">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <input type="email" name="email" class="form-control form-control-user"
-                                    placeholder="Email Address" required>
+                                       placeholder="Email Address" required>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
                                     <input type="password" name="password" class="form-control form-control-user"
-                                        placeholder="Password" required>
+                                           placeholder="Password" required>
                                 </div>
                                 <div class="col-sm-6">
                                     <input type="password" name="repeat_password" class="form-control form-control-user"
-                                        placeholder="Repeat Password" required>
+                                           placeholder="Repeat Password" required>
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary btn-user btn-block">Register Account</button>
-                            <hr>
-                            <a href="../index.php" class="btn btn-google btn-user btn-block">
-                                <i class="fab fa-google fa-fw"></i> Register with Google
-                            </a>
-                            <a href="../index.php" class="btn btn-facebook btn-user btn-block">
-                                <i class="fab fa-facebook-f fa-fw"></i> Register with Facebook
-                            </a>
                         </form>
                         <hr>
                         <div class="text-center">
@@ -141,9 +148,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 </div>
 
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-<script src="js/sb-admin-2.min.js"></script>
+<script src="../vendor/jquery/jquery.min.js"></script>
+<script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="../js/sb-admin-2.min.js"></script>
+
 </body>
 </html>
