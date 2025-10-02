@@ -106,6 +106,7 @@ if (count($labels) > 12) {
 <body id="page-top">
 
     <!-- Page Wrapper -->
+
     <div id="wrapper">
 
         <!-- Sidebar -->
@@ -120,6 +121,7 @@ if (count($labels) > 12) {
             </a>
 
             <!-- Divider -->
+             
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
