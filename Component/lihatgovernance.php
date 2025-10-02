@@ -72,15 +72,21 @@ $conn->close();
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Data Governance</title>
+
+    <!-- Font & Template bawaan -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="../css/sb-admin-2.min.css" rel="stylesheet">
-    <title>Data Governance</title>
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #a8e063, #56ab2f);
-            margin: 20px;
+            background: linear-gradient(135deg, #3fab0e, #0096c7);
         }
         h2 {
             text-align: center;
@@ -102,9 +108,8 @@ $conn->close();
             background: #2c3e50;
             color: #fff;
         }
-        tr:nth-child(even) {
-            background: #f9f9f9;
-        }
+        tr:nth-child(even) { background: #f9f9f9; }
+
         .box {
             width: 80%;
             margin: 20px auto;
@@ -121,11 +126,34 @@ $conn->close();
         .baik { color: green; }
         .cukup { color: orange; }
         .kurang { color: red; }
-        canvas {
-            margin-top: 20px;
+        canvas { margin-top: 20px; }
+
+        /* ===== RESPONSIVE SECTION ===== */
+        @media (max-width: 992px) {
+            table, .box {
+                width: 95%;
+            }
+        }
+        @media (max-width: 576px) {
+            table {
+                width: 100%;
+                font-size: 12px;
+            }
+            th, td {
+                padding: 6px 8px;
+            }
+            .box {
+                width: 100%;
+                padding: 12px;
+            }
+            .score {
+                font-size: 14px;
+            }
+            h2 { font-size: 18px; }
         }
     </style>
 </head>
+
 <body>
 
 <h2>Data Governance</h2>

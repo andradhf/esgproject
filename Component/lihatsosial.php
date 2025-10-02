@@ -77,24 +77,72 @@ $cek->close();
 <html lang="id">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Data Sosial</title>
+
+  <!-- Font Awesome & SB Admin -->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../css/sb-admin-2.min.css" rel="stylesheet">
-  <title>Data Sosial</title>
+
   <style>
-    body { font-family: Arial, sans-serif; background: #f0f9ff; padding: 30px; }
-    h2, h3 { text-align: center; color: #1e3a8a; margin-bottom: 20px; }
-    table {
-      width: 90%; margin: auto; border-collapse: collapse; background: #ffffff;
-      box-shadow: 0px 4px 12px rgba(0,0,0,0.1); border-radius: 10px; overflow: hidden;
+    body { 
+      font-family: Arial, sans-serif; 
+      background: linear-gradient(135deg, #3fab0e, #0096c7);
+      padding: 20px; 
     }
-    th, td { padding: 12px 16px; text-align: center; }
-    th { background-color: #1e40af; color: white; text-transform: uppercase; }
+    h2, h3 { 
+      text-align: center; 
+      color: #1e3a8a; 
+      margin-bottom: 20px; 
+    }
+    table {
+      width: 100%; 
+      margin: auto; 
+      border-collapse: collapse; 
+      background: #ffffff;
+      box-shadow: 0px 4px 12px rgba(0,0,0,0.1); 
+      border-radius: 10px; 
+      overflow: hidden;
+    }
+    th, td { 
+      padding: 10px 14px; 
+      text-align: center; 
+      font-size: 14px;
+    }
+    th { 
+      background-color: #1e40af; 
+      color: white; 
+      text-transform: uppercase; 
+    }
     tr:nth-child(even) { background-color: #f1f5f9; }
     tr:hover { background-color: #e0f2fe; transition: 0.3s; }
     .highlight { font-weight: bold; color: #047857; }
-    .box { background: #ecfdf5; padding: 20px; margin: 20px auto; border-radius: 10px; width: 60%; text-align: center; }
+    .box { 
+      background: #ecfdf5; 
+      padding: 15px; 
+      margin: 20px auto; 
+      border-radius: 10px; 
+      width: 100%; 
+      max-width: 600px; 
+      text-align: center; 
+    }
+
+    /* Responsif untuk layar kecil */
+    @media (max-width: 768px) {
+      th, td { font-size: 12px; padding: 8px; }
+      h2, h3 { font-size: 18px; }
+      .box { width: 95%; padding: 12px; }
+    }
+    @media (max-width: 480px) {
+      th, td { font-size: 11px; }
+      h2 { font-size: 16px; }
+      h3 { font-size: 14px; }
+    }
   </style>
 </head>
+
 <body>
 
 <h2>Data Sosial UMKM</h2>
