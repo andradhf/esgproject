@@ -292,7 +292,7 @@ if (count($labels) > 12) {
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                                        </div>
+                                        </div> 
                                     </div>
                                 </div>
                             </div>
