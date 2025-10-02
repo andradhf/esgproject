@@ -86,10 +86,20 @@ while ($row = $res->fetch_assoc()) {
   <title>ESG Syariah UMKM</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {margin:0;font-family:Arial,sans-serif;background:#f8f9fa;}
     .sidebar {position:fixed;top:0;left:0;width:220px;height:100%;background:#183a37;color:#fff;padding-top:30px;}
-    .sidebar h2{text-align:center;margin-bottom:40px;color:#5ec576;}
+    .sidebar h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 20px;     
+    font-weight: 700;   
+    line-height: 1.4;    
+    color: #5ec576;      
+    text-transform: uppercase; 
+    letter-spacing: 1px; 
+}
     .sidebar a{display:block;padding:12px 20px;color:#fff;text-decoration:none;font-size:16px;border-radius:5px;}
     .sidebar a:hover,.sidebar a.active{background:#14524f;}
     .brand-logo img{width:50px;height:auto;}
@@ -123,6 +133,79 @@ while ($row = $res->fetch_assoc()) {
     .footer{margin-top:25px;font-weight:bold;}
     .btn{display:inline-block;background:green;color:#fff;padding:10px 18px;border:none;border-radius:8px;cursor:pointer;margin-top:20px;}
     .hidden{display:none;}
+/* --- Tablet & Mobile --- */
+@media (max-width: 992px) {
+  .sidebar {
+    position: relative;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; /* kiri brand, kanan menu */
+    align-items: center;
+    padding: 10px 20px;
+    gap: 20px;
+  }
+
+  /* Brand */
+  .sidebar .sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .sidebar .brand-text {
+    font-size: 18px;
+    font-weight: 600; /* tebal */
+    color: #fff;      /* sesuaikan warna */
+    margin: 0;
+    line-height: 1.2;
+    text-transform: uppercase; /* biar seragam */
+  }
+
+  /* Menu link */
+  .sidebar a {
+    display: inline-block;
+    padding: 8px 14px;
+    margin: 0 5px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #fff; /* warna teks menu */
+    text-decoration: none;
+  }
+  .sidebar a:hover {
+    background: rgba(255,255,255,0.1);
+    border-radius: 6px;
+  }
+
+  .main-content {
+    margin-left: 0;
+    margin-top: 20px;
+  }
+}
+
+/* --- Mobile (HP kecil) --- */
+@media (max-width: 768px) {
+  .sidebar {
+    flex-direction: column;
+    align-items: center; /* biar teks/menu rata tengah */
+    text-align: center;
+  }
+
+  .sidebar .sidebar-brand {
+    margin-bottom: 10px;
+    justify-content: center;
+  }
+
+  /* Menu wrap ke bawah */
+  .sidebar a {
+    display: block;
+    width: 100%;
+    margin: 6px 0;
+    padding: 10px;
+    font-size: 15px;
+    text-align: center; /* teks menu rata tengah */
+  }
+}
   </style>
 </head>
 <body>
@@ -159,7 +242,7 @@ while ($row = $res->fetch_assoc()) {
       <div class="card">Rata Rata Skor ESG <h3><?= $avg_esg ?></h3></div>
     </div>
     <div class="table-container">
-      <h3>Tren Penilaian ESG <button class="export-btn">Export</button></h3>
+      <h3>Tren Penilaian ESG</h3>
       <canvas id="esgChart" height="100"></canvas>
     </div>
   </div>
@@ -168,7 +251,8 @@ while ($row = $res->fetch_assoc()) {
   <div id="dataumkm" class="hidden">
     <div class="table-container">
       <h3>Data UMKM</h3>
-      <table>
+      <div class="table-responsive">
+      <table  class="table table-bordered table-striped table-sm">
         <thead>
           <tr>
             <th>No</th><th>Nama UMKM</th><th>Tanggal</th><th>Env</th>
@@ -208,7 +292,7 @@ while ($row = $res->fetch_assoc()) {
       </table>
     </div>
   </div>
-
+</div>
   <!-- Reports -->
   <div id="reports" class="hidden">
     <div class="table-container">

@@ -11,8 +11,11 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
 $umkm_id = $_SESSION['umkm_id'];
 
 
-$sql = "SELECT * FROM data_sosial ORDER BY id DESC LIMIT 1";
-$result = $conn->query($sql);
+$sql = "SELECT * FROM data_sosial WHERE umkm_id = ? ORDER BY id DESC LIMIT 1";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $umkm_id);
+$stmt->execute();
+$result = $stmt->get_result();
 
 $sosial_skor = 0;
 $kategori_sosial = "Belum ada data";
@@ -95,8 +98,9 @@ $cek->close();
 <body>
 
 <h2>Data Sosial UMKM</h2>
-
-<table>
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+  <thead>
   <tr>
     <th>Karyawan</th>
     <th>Karyawan Perempuan</th>
@@ -107,6 +111,7 @@ $cek->close();
     <th>CSR</th>
     <th>ZISWAF</th>
   </tr>
+  </thead>
 <?php
 if ($row) {
     echo "<tr>";
@@ -124,6 +129,7 @@ if ($row) {
 }
 ?>
 </table>
+</div>
 
 <div class="box">
   <h3>Penilaian Sosial</h3>

@@ -46,9 +46,9 @@ $result = $conn->query($sql);
     <?php
     if ($result && $result->num_rows > 0) {
         $row = $result->fetch_assoc();
-        $skor_pendapatan = ($row['pendapatan_halal'] == "Halal") ? 100 : 50;
-        $skor_ziswaf     = ($row['ziswaf'] > 0) ? 100 : 50;
-        $skor_pembiayaan = (!empty($row['pembiayaan'])) ? 100 : 50;
+        $skor_pendapatan = ($row['pendapatan_halal'] == 1.00) ? 100 : 0;
+        $skor_ziswaf     = ($row['ziswaf'] > 0) ? 100 : 0;
+        $skor_pembiayaan = (!empty($row['pembiayaan'])) ? 100 : 0;
         $total_skor = round(($skor_pendapatan + $skor_ziswaf + $skor_pembiayaan) / 3);
 
         $maqasid_pendapatan = !empty($row['maqasid_pendapatan']) ? explode(", ", $row['maqasid_pendapatan']) : [];
@@ -66,17 +66,27 @@ $result = $conn->query($sql);
             $kategori = "<span class='badge kurang'>Kurang ❌</span>";
         }
 
-        echo "<table>
-                <tr><th>Pendapatan Halal</th><th>ZISWAF</th><th>Pembiayaan</th><th>Maqasid Dipilih</th><th>Total Skor</th><th>Kategori</th></tr>
-                <tr>
-                    <td>{$row['pendapatan_halal']} <br><small>(Skor: $skor_pendapatan)</small></td>
-                    <td>{$row['ziswaf']} <br><small>(Skor: $skor_ziswaf)</small></td>
-                    <td>{$row['pembiayaan']} <br><small>(Skor: $skor_pembiayaan)</small></td>
-                    <td>$jumlah_maqasid</td>
-                    <td><b>$total_skor</b></td>
-                    <td>$kategori</td>
-                </tr>
-              </table>";
+        echo '
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-sm">
+                    <tr>
+                        <th>Pendapatan Halal</th>
+                        <th>ZISWAF</th>
+                        <th>Pembiayaan</th>
+                        <th>Maqasid Dipilih</th>
+                        <th>Total Skor</th>
+                        <th>Kategori</th>
+                    </tr>
+                    <tr>
+                        <td>'.$row['pendapatan_halal'].' <br><small>(Skor: '.$skor_pendapatan.')</small></td>
+                        <td>'.$row['ziswaf'].' <br><small>(Skor: '.$skor_ziswaf.')</small></td>
+                        <td>'.$row['pembiayaan'].' <br><small>(Skor: '.$skor_pembiayaan.')</small></td>
+                        <td>'.$jumlah_maqasid.'</td>
+                        <td><b>'.$total_skor.'</b></td>
+                        <td>'.$kategori.'</td>
+                    </tr>
+                </table>
+            </div>';
 
         echo "<div class='card'>
                 <h3>📌 Detail Maqasid yang Dipilih:</h3>
