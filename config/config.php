@@ -1,8 +1,8 @@
 <?php
 $host = "localhost"; 
-$user = "root"; 
-$pass = ""; 
-$db   = "db_esgsyariah"; 
+$user = "umkmesgr_report"; 
+$pass = "a&JtY*D3CAyC#}q&"; 
+$db   = "umkmesgr_db_esgsyariah"; 
 
 $conn = mysqli_connect($host, $user, $pass, $db);
 
