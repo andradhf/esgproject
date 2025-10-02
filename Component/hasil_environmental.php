@@ -199,8 +199,8 @@ $conn->close();
         ?>
     </div>
 
-    <h3 style="text-align:center;">Penilaian Maqasid:</h3> 
-    <p style="text-align:center;">Kategori: <?= $kategori_maqasid ?></p>
+    <h3 style="text-align:center; color: white;">Penilaian Maqasid:</h3> 
+    <p style="text-align:center; color: white">Kategori: <?= $kategori_maqasid ?></p>
 
     <div class="chart-container">
         <canvas id="envChart"></canvas>
