@@ -367,6 +367,18 @@ function updateReport(){
        <p>Ringkasan Skor ESG</p>
        <p><b>Skor Total ESG</b></p>`;
     document.getElementById("reportScore").innerText=data.avg_score ?? 0;
+
+    // Atur warna sesuai nilai
+const scoreElement = document.getElementById("reportScore");
+const nilai = parseFloat(data.avg_score ?? 0);
+if (nilai >= 80) {
+  scoreElement.style.color = "green";
+} else if (nilai >= 60) {
+  scoreElement.style.color = "blue";
+} else {
+  scoreElement.style.color = "red";
+}
+
     document.getElementById("envCard").innerHTML=`<h4>Environmental</h4><p>${data.env ?? '-'}/100</p>`;
     document.getElementById("sosialCard").innerHTML=`<h4>Sosial</h4><p>${data.sos ?? '-'}/100</p>`;
     document.getElementById("govCard").innerHTML=`<h4>Governance</h4><p>${data.gov ?? '-'}/100</p>`;
