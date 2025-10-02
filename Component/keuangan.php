@@ -29,7 +29,15 @@ $stmt->close();
 
 // Jika form disubmit
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $pendapatan = $_POST['pendapatan'] ?? '';
+    if (isset($_POST['pendapatan'])) {
+    if ($_POST['pendapatan'] === "Halal") {
+        $pendapatan = 1.00;
+    } else {
+        $pendapatan = 0.00;
+    }
+} else {
+    $pendapatan = null; // kalau tidak dipilih
+}
     $jumlah_ziswaf = $_POST['jumlah_ziswaf'] ?? 0;
     $akad = $_POST['akad'] ?? '';
 
@@ -62,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             $stmt = $conn->prepare($sql);
             $stmt->bind_param(
-                "sissssi",
+                "ddssssi",
                 $pendapatan,
                 $jumlah_ziswaf,
                 $akad,
@@ -85,7 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             $stmt = $conn->prepare($sql);
             $stmt->bind_param(
-                "ississs",
+                "iddssss",
                 $umkm_id,
                 $pendapatan,
                 $jumlah_ziswaf,
@@ -229,6 +237,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         .info-box strong {
             color: #333;
         }
+          @media (max-width: 576px) { /* ukuran HP kecil */
+    .sidebar-tagline {
+      font-size: 10px !important; /* lebih kecil di HP */
+      line-height: 1.2;
+    }
+  }
     </style>
 </head>
 
@@ -294,16 +308,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <div class="text-center d-none d-md-inline">
             <button class="rounded-circle border-0" id="sidebarToggle"></button>
         </div>
-        <div class="sidebar-brand d-flex align-items-center justify-content-">
-            <div style="font-size:12px; color:#dbeffa; margin-top:4px;">
-                "Membangun UMKM Berkelanjutan dengan Prinsip ESG Syariah"
+        <div class="sidebar-brand d-flex flex-column align-items-center text-center px-2">
+             <div class="sidebar-tagline text-wrap text-break w-100 fs-6 fs-md-5 fs-lg-4" 
+                style="font-size:12px; color:#dbeffa; margin-top:4px;">
+            "Membangun UMKM Berkelanjutan dengan Prinsip ESG Syariah"
             </div>
-        </div>
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
-            <div class="sidebar-brand-icon">
-                <img src="../img/logo_kemendikbud.png" alt="Kemendikbud" style="width:150px; height:auto;">
+            <div class="sidebar-brand-icon my-2">
+                <img src="../img/logo_kemendikbud.png" alt="Kemendikbud" class="img-fluid" style="max-width:120px;">
             </div>
-        </a>
+            </div>
     </ul>
     <!-- End of Sidebar -->
 
@@ -371,14 +384,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         <h2>A. Pendapatan Halal</h2>
                         <label>Rasio pendapatan halal/non halal</label>
                         <div class="row">
+                           <label><input type="radio" 
+                            name="pendapatan" 
+                            value="Halal"
+                            <?= ($data_existing && $data_existing['pendapatan_halal'] == 1.00) ? 'checked' : '' ?>> Halal</label>
                             <label><input type="radio" 
-                                          name="pendapatan" 
-                                          value="Halal"
-                                          <?= ($data_existing && $data_existing['pendapatan_halal'] == 'Halal') ? 'checked' : '' ?>> Halal</label>
-                            <label><input type="radio" 
-                                          name="pendapatan" 
-                                          value="Non Halal"
-                                          <?= ($data_existing && $data_existing['pendapatan_halal'] == 'Non Halal') ? 'checked' : '' ?>> Non Halal</label>
+                            name="pendapatan" 
+                            value="Non Halal"
+                            <?= ($data_existing && $data_existing['pendapatan_halal'] == 0.00) ? 'checked' : '' ?>> Non Halal</label>
                         </div>
                         <div class="checkbox-group">
                             <label><input type="checkbox" 

@@ -191,6 +191,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         .info-box strong {
             color: #333;
         }
+          @media (max-width: 576px) { /* ukuran HP kecil */
+    .sidebar-tagline {
+      font-size: 10px !important; /* lebih kecil di HP */
+      line-height: 1.2;
+    }
+  }
     </style>
 </head>
 
@@ -276,16 +282,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </div>
 
             <!-- Motto -->
-            <div class="sidebar-brand d-flex align-items-center justify-content-">
-                <div style="font-size:12px; color:#dbeffa; margin-top:4px;">
-                    "Membangun UMKM Berkelanjutan dengan Prinsip ESG Syariah"
-                </div>
+             <div class="sidebar-brand d-flex flex-column align-items-center text-center px-2">
+             <div class="sidebar-tagline text-wrap text-break w-100 fs-6 fs-md-5 fs-lg-4" 
+                style="font-size:12px; color:#dbeffa; margin-top:4px;">
+            "Membangun UMKM Berkelanjutan dengan Prinsip ESG Syariah"
             </div>
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
-                <div class="sidebar-brand-icon">
-                    <img src="../img/logo_kemendikbud.png" alt="Kemendikbud" style="width:150px; height:auto;">
-                </div>
-            </a>
+            <div class="sidebar-brand-icon my-2">
+                <img src="../img/logo_kemendikbud.png" alt="Kemendikbud" class="img-fluid" style="max-width:120px;">
+            </div>
+            </div>
         </ul>
         <!-- End of Sidebar -->
 
