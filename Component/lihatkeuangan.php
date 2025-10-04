@@ -22,22 +22,77 @@ $result = $conn->query($sql);
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- wajib agar responsive -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="../css/sb-admin-2.min.css" rel="stylesheet">
     <title>Hasil Penilaian Keuangan Syariah</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(to right, #83a4d4, #b6fbff); margin: 0; padding: 40px; }
-        .container { width: 85%; margin: auto; }
-        h2 { text-align: center; color: #2c3e50; margin-bottom: 30px; }
-        table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-        th, td { padding: 15px; text-align: center; border-bottom: 1px solid #eee; }
-        th { background: #2c3e50; color: #fff; font-weight: bold; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: linear-gradient(135deg, #3fab0e, #0096c7);
+            margin-top: 20px; 
+            padding: 40px; 
+        }
+        .container { 
+            width: 85%; 
+            margin: auto; 
+        }
+        h2 { 
+            text-align: center; 
+            color: #2c3e50; 
+            margin-bottom: 30px; 
+        }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            background: #fff; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
+        }
+        th, td { 
+            padding: 15px; 
+            text-align: center; 
+            border-bottom: 1px solid #eee; 
+        }
+        th { 
+            background: #2c3e50; 
+            color: #fff; 
+            font-weight: bold; 
+        }
         tr:hover { background: #f1f7ff; }
-        .badge { padding: 6px 12px; border-radius: 20px; color: #fff; font-weight: bold; }
+        .badge { 
+            padding: 6px 12px; 
+            border-radius: 20px; 
+            color: #fff; 
+            font-weight: bold; 
+        }
         .baik { background: #27ae60; }
         .cukup { background: #f39c12; }
         .kurang { background: #e74c3c; }
-        .card { margin-top: 25px; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .card { 
+            margin-top: 25px; 
+            background: #fff; 
+            padding: 20px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+        }
+
+        /* ✅ Responsive untuk HP */
+        @media (max-width: 768px) {
+            body { padding: 15px; }
+            .container { width: 100%; }
+            table { font-size: 12px; }
+            th, td { padding: 8px; }
+            h2 { font-size: 18px; }
+            .card { padding: 15px; font-size: 13px; }
+        }
+
+        @media (max-width: 480px) {
+            table { font-size: 11px; }
+            th, td { padding: 6px; }
+            h2 { font-size: 16px; }
+        }
     </style>
 </head>
 <body>
@@ -89,7 +144,7 @@ $result = $conn->query($sql);
             </div>';
 
         echo "<div class='card'>
-                <h3>📌 Detail Maqasid yang Dipilih:</h3>
+                <h5>📌 Detail Maqasid yang Dipilih:</h5>
                 <p><b>Pendapatan:</b> ".implode(", ", $maqasid_pendapatan)."</p>
                 <p><b>ZISWAF:</b> ".implode(", ", $maqasid_ziswaf)."</p>
                 <p><b>Pembiayaan:</b> ".implode(", ", $maqasid_pembiayaan)."</p>
@@ -122,6 +177,6 @@ $result = $conn->query($sql);
     <button onclick="window.history.back()" class="btn btn-secondary">
         <i class="fas fa-arrow-left"></i> Back
     </button>
-    </div>
+</div>
 </body>
 </html>

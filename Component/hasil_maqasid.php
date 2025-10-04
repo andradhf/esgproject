@@ -60,25 +60,73 @@ $conn->close();
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- supaya responsive di HP -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- wajib agar responsive -->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
     <title>Hasil Penilaian Maqasid Syariah</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-               background: linear-gradient(to right, #56ab2f, #a8e063);
-               margin: 0; padding: 40px; }
-        .container { width: 85%; margin: auto; }
-        h2 { text-align: center; color: #2c3e50; margin-bottom: 30px; }
-        table { width: 100%; border-collapse: collapse; background: #fff;
-                border-radius: 12px; overflow: hidden;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-        th, td { padding: 15px; text-align: center; border-bottom: 1px solid #eee; }
-        th { background: #2c3e50; color: #fff; font-weight: bold; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #3fab0e, #0096c7);
+            margin-top: 30px ; 
+            padding: 80px; 
+        }
+        .container { 
+            width: 85%; 
+            margin: auto; 
+        }
+        h2 { 
+            text-align: center; 
+            color: #2c3e50; 
+            margin-bottom: 30px; 
+        }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            background: #fff;
+            border-radius: 12px; 
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
+        }
+        th, td { 
+            padding: 15px; 
+            text-align: center; 
+            border-bottom: 1px solid #eee; 
+        }
+        th { 
+            background: #2c3e50; 
+            color: #fff; 
+            font-weight: bold; 
+        }
         tr:hover { background: #f1f7ff; }
-        .badge { padding: 6px 12px; border-radius: 20px; color: #fff; font-weight: bold; }
+        .badge { 
+            padding: 6px 12px; 
+            border-radius: 20px; 
+            color: #fff; 
+            font-weight: bold; 
+        }
         .cukup { background: #f39c12; }
         .kurang { background: #e74c3c; }
         .baik { background: #27ae60; }
+
+        /* ✅ Responsive rules */
+        @media (max-width: 768px) {
+            body { padding: 15px; }
+            .container { width: 100%; }
+            h2 { font-size: 18px; }
+            table { font-size: 13px; }
+            th, td { padding: 8px; }
+        }
+
+        @media (max-width: 480px) {
+            h2 { font-size: 16px; }
+            table { font-size: 12px; }
+            th, td { padding: 6px; }
+        }
     </style>
 </head>
+
 <body>
 <div class="container">
     <h2>Hasil Penilaian Maqasid Syariah</h2>
@@ -102,6 +150,11 @@ $conn->close();
             </td>
         </tr>
     </table>
+</div>
+<div class="mb-3" style="margin-top:50px">
+    <button onclick="window.history.back()" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Back
+    </button>
 </div>
 </body>
 </html>
