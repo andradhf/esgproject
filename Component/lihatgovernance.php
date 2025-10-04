@@ -20,7 +20,6 @@ $row = $result && $result->num_rows > 0 ? $result->fetch_assoc() : null;
 $score = 0;
 $persen = 0;
 $kategori = "Belum Ada Data";
-$maqasid = "Belum Dinilai";
 
 if ($row) {
     // hitung skor
@@ -34,15 +33,36 @@ if ($row) {
 
     if ($persen == 100) {
         $kategori = "Baik ✅";
-        $maqasid = "Sesuai dengan Syariah Maqasid ✅";
     } elseif ($persen >= 50) {
         $kategori = "Cukup ⚠️";
-        $maqasid = "Perlu Perbaikan ⚠️";
     } else {
         $kategori = "Kurang ❌";
-        $maqasid = "Tidak Sesuai dengan Syariah ❌";
     }
 }
+
+$maqasid_legalitas     = $row['maqasid_legalitas']     ?? "Belum Dinilai";
+$maqasid_syariah       = $row['maqasid_syariah']       ?? "Belum Dinilai";
+$maqasid_transparansi  = $row['maqasid_transparansi']  ?? "Belum Dinilai";
+$maqasid_integritas    = $row['maqasid_integritas']    ?? "Belum Dinilai";
+
+// Hitung jumlah "Ya"
+$jumlah_ya = 0;
+if (stripos($maqasid_legalitas, 'ya') !== false) $jumlah_ya++;
+if (stripos($maqasid_syariah, 'ya') !== false) $jumlah_ya++;
+if (stripos($maqasid_transparansi, 'ya') !== false) $jumlah_ya++;
+if (stripos($maqasid_integritas, 'ya') !== false) $jumlah_ya++;
+
+// Tentukan kategori penilaian maqasid
+if ($jumlah_ya >= 4) {
+    $maqasid_kategori = "Sesuai ✅";
+} elseif ($jumlah_ya == 3) {
+    $maqasid_kategori = "Cukup Sesuai ⚠️";
+} elseif ($jumlah_ya >= 1 && $jumlah_ya <= 2) {
+    $maqasid_kategori = "Tidak Sesuai ❌";
+} else {
+    $maqasid_kategori = "Belum Dinilai";
+}
+
 
 // cek apakah umkm_id sudah ada di laporan_esg
 $cek = $conn->prepare("SELECT id FROM laporan_esg WHERE umkm_id = ?");
@@ -191,7 +211,7 @@ $conn->close();
     </p>
 
     <h3>Penilaian Maqasid:</h3>
-    <p class="score"><?= $maqasid; ?></p>
+    <p class="score"><?= $maqasid_kategori; ?></p>
 
     <div style="width: 300px; height: 300px; margin: auto;">
         <canvas id="governanceChart"></canvas>
