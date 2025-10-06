@@ -24,32 +24,60 @@ $row = null;
 
 if ($result && $result->num_rows > 0) {
     $row = $result->fetch_assoc();
+$sosial_skor = 0;
 
-    if ($row["karyawan"] > 0) $sosial_skor += 20;
-    if ($row["karyawan_perempuan"] > 0) $sosial_skor += 10;
-    if ($row["pelatihan_sdm"] > 0) $sosial_skor += 20;
-    if ($row["csr"] == "Ya") $sosial_skor += 20;
-    if ($row["ziswaf"] > 0) $sosial_skor += 30;
+// Jika insiden lebih dari 10, langsung set kategori Kurang
+if ($row["insiden_k3"] > 10) {
+    $kategori_sosial = "Kurang ❌";
+} else {
+    // Hitung skor sosial hanya jika insiden tidak melebihi 10
+    if ($row["karyawan"] > 0) $sosial_skor += 25;
+    if ($row["produk_halal"] == "Ya") $sosial_skor += 25;
+    if ($row["pelatihan_sdm"] > 0) $sosial_skor += 25;
+    if ($row["csr"] == "Ya") $sosial_skor += 25;
 
-    if ($sosial_skor >= 80) {
+    // Kategorisasi berdasarkan skor
+    if ($sosial_skor >= 75) {
         $kategori_sosial = "Baik ✅";
     } elseif ($sosial_skor >= 50) {
         $kategori_sosial = "Cukup ⚠️";
     } else {
         $kategori_sosial = "Kurang ❌";
     }
+}
 
-    $allMaqasid = !empty($row["maqasid_tenaga"]) &&
-                  !empty($row["maqasid_k3"]) &&
-                  !empty($row["maqasid_sdm"]) &&
-                  !empty($row["maqasid_produk"]) &&
-                  !empty($row["maqasid_sosial"]);
+    // Hitung jumlah kolom maqasid yang terisi
+$maqasid_count = 0;
 
-    if ($allMaqasid) {
-        $kategori_maqasid = "✅ Sesuai dengan Syariah Maqasid";
-    } else {
-        $kategori_maqasid = "⚠️ Belum sesuai Syariah Maqasid";
+// Kolom berbasis angka
+$maqasid_fields_numeric = [
+    "maqasid_tenaga_nasl",
+    "maqasid_tenaga_nafs",
+    "maqasid_produk_din",
+    "maqasid_produk_nafs",
+    "maqasid_sosial_mal",
+    "maqasid_sosial_nasl"
+];
+
+// Cek kolom bernilai angka
+foreach ($maqasid_fields_numeric as $field) {
+    if (isset($row[$field]) && $row[$field] == 1) {
+        $maqasid_count++;
     }
+}
+
+// Cek kolom berbasis teks (string)
+if (!empty($row["maqasid_k3"])) $maqasid_count++;
+if (!empty($row["maqasid_sdm"])) $maqasid_count++;
+
+// Tentukan kategori maqasid berdasarkan jumlah kolom terisi
+if ($maqasid_count >= 7) {
+    $kategori_maqasid = "✅ Sesuai dengan Syariah Maqasid";
+} elseif ($maqasid_count >= 4) {
+    $kategori_maqasid = "⚠️ Cukup sesuai dengan Syariah Maqasid";
+} else {
+    $kategori_maqasid = "❌ Belum sesuai Syariah Maqasid";
+}
 }
 // cek apakah umkm_id sudah ada di laporan_esg
 $cek = $conn->prepare("SELECT id FROM laporan_esg WHERE umkm_id = ?");

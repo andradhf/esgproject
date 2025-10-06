@@ -12,6 +12,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
 $umkm_id = $_SESSION['umkm_id'];
 
 // Inisialisasi variabel untuk form
+// Inisialisasi variabel untuk form
 $data_existing = null;
 $is_update = false;
 
@@ -29,55 +30,76 @@ $stmt->close();
 
 // Jika form disubmit
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $jumlah_karyawan = $_POST['jumlah_karyawan'] ?? 0;
-    $jumlah_karyawan_perempuan = $_POST['jumlah_karyawan_perempuan'] ?? 0;
-    $jumlah_insiden = $_POST['jumlah_insiden'] ?? 0;
+    $jumlah_karyawan = intval($_POST['jumlah_karyawan'] ?? 0);
+    $jumlah_karyawan_perempuan = intval($_POST['jumlah_karyawan_perempuan'] ?? 0);
+    $jumlah_insiden = intval($_POST['jumlah_insiden'] ?? 0);
     $kejadian = $_POST['kejadian'] ?? '';
-    $jam_pelatihan = $_POST['jam_pelatihan'] ?? 0;
+    $jam_pelatihan = intval($_POST['jam_pelatihan'] ?? 0);
     $produk_halal = $_POST['produk_halal'] ?? '';
     $csr = $_POST['csr'] ?? '';
-    $ziswaf = $_POST['ziswaf'] ?? 0;
+    $ziswaf = intval($_POST['ziswaf'] ?? 0);
 
-    $maqasid_tenaga = isset($_POST['maqasid_tenaga']) ? implode(", ", $_POST['maqasid_tenaga']) : '';
-    $maqasid_k3 = isset($_POST['maqasid_k3']) ? implode(", ", $_POST['maqasid_k3']) : '';
+    // ✅ Maqasid Tenaga
+    $maqasid_tenaga_nasl = (isset($_POST['maqasid_tenaga']) && in_array('Hifz al-Nasl', $_POST['maqasid_tenaga'])) ? 1 : 0;
+    $maqasid_tenaga_nafs = (isset($_POST['maqasid_tenaga']) && in_array('Hifz al-Nafs', $_POST['maqasid_tenaga'])) ? 1 : 0;
+
+    // ✅ Maqasid Produk
+    $maqasid_produk_din  = (isset($_POST['maqasid_produk']) && in_array('Hifz al-Din', $_POST['maqasid_produk'])) ? 1 : 0;
+    $maqasid_produk_nafs = (isset($_POST['maqasid_produk']) && in_array('Hifz al-Nafs', $_POST['maqasid_produk'])) ? 1 : 0;
+
+    // ✅ Maqasid Sosial
+    $maqasid_sosial_mal  = (isset($_POST['maqasid_sosial']) && in_array('Hifz al-Mal', $_POST['maqasid_sosial'])) ? 1 : 0;
+    $maqasid_sosial_nasl = (isset($_POST['maqasid_sosial']) && in_array('Hifz al-Nasl', $_POST['maqasid_sosial'])) ? 1 : 0;
+
+    // ✅ Maqasid lainnya (jika masih dalam bentuk string)
+    $maqasid_k3  = isset($_POST['maqasid_k3']) ? implode(", ", $_POST['maqasid_k3']) : '';
     $maqasid_sdm = isset($_POST['maqasid_sdm']) ? implode(", ", $_POST['maqasid_sdm']) : '';
-    $maqasid_produk = isset($_POST['maqasid_produk']) ? implode(", ", $_POST['maqasid_produk']) : '';
-    $maqasid_sosial = isset($_POST['maqasid_sosial']) ? implode(", ", $_POST['maqasid_sosial']) : '';
 
-    // Validasi minimal satu field terisi
-    if ($jumlah_karyawan == 0 && $jumlah_karyawan_perempuan == 0 && $jumlah_insiden == 0 && 
-        $jam_pelatihan == 0 && empty($kejadian) && empty($produk_halal) && empty($csr) && $ziswaf == 0) {
+    // Validasi minimal satu field
+    if ($jumlah_karyawan == 0 && $jumlah_karyawan_perempuan == 0 && $jumlah_insiden == 0 &&
+        $jam_pelatihan == 0 && empty($kejadian) && empty($produk_halal) && empty($csr) && $ziswaf == 0 &&
+        $maqasid_tenaga_nasl == 0 && $maqasid_tenaga_nafs == 0 &&
+        $maqasid_produk_din == 0 && $maqasid_produk_nafs == 0 &&
+        $maqasid_sosial_mal == 0 && $maqasid_sosial_nasl == 0) {
         $_SESSION['error'] = "Minimal satu field harus diisi";
         header("Location: sosial.php");
         exit;
     }
 
-    // Mulai transaction
     $conn->begin_transaction();
 
     try {
         if ($is_update) {
-            // UPDATE data yang sudah ada
+            // ✅ UPDATE data
             $sql = "UPDATE data_sosial SET 
-                    karyawan = ?, 
-                    karyawan_perempuan = ?, 
-                    insiden_k3 = ?, 
-                    kejadian = ?, 
-                    pelatihan_sdm = ?, 
-                    produk_halal = ?, 
-                    csr = ?, 
-                    ziswaf = ?, 
-                    maqasid_tenaga = ?, 
-                    maqasid_k3 = ?, 
-                    maqasid_sdm = ?, 
-                    maqasid_produk = ?, 
-                    maqasid_sosial = ?,
-                    created_at = NOW()
+                        karyawan = ?, 
+                        karyawan_perempuan = ?, 
+                        insiden_k3 = ?, 
+                        kejadian = ?, 
+                        pelatihan_sdm = ?, 
+                        produk_halal = ?, 
+                        csr = ?, 
+                        ziswaf = ?, 
+                        maqasid_tenaga_nasl = ?, 
+                        maqasid_tenaga_nafs = ?, 
+                        maqasid_produk_din = ?, 
+                        maqasid_produk_nafs = ?, 
+                        maqasid_sosial_mal = ?, 
+                        maqasid_sosial_nasl = ?, 
+                        maqasid_k3 = ?, 
+                        maqasid_sdm = ?, 
+                        created_at = NOW()
                     WHERE umkm_id = ?";
 
             $stmt = $conn->prepare($sql);
+            if (!$stmt) {
+                throw new Exception("Prepare failed (UPDATE): " . $conn->error);
+            }
+
+            // 17 variabel total
+            $types = "iiisissiiiiiiissi";
             $stmt->bind_param(
-                "iiisissssssssi",
+                $types,
                 $jumlah_karyawan,
                 $jumlah_karyawan_perempuan,
                 $jumlah_insiden,
@@ -86,29 +108,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $produk_halal,
                 $csr,
                 $ziswaf,
-                $maqasid_tenaga,
+                $maqasid_tenaga_nasl,
+                $maqasid_tenaga_nafs,
+                $maqasid_produk_din,
+                $maqasid_produk_nafs,
+                $maqasid_sosial_mal,
+                $maqasid_sosial_nasl,
                 $maqasid_k3,
                 $maqasid_sdm,
-                $maqasid_produk,
-                $maqasid_sosial,
                 $umkm_id
             );
 
-            if ($stmt->execute()) {
-                $_SESSION['success'] = "Data berhasil diperbarui!";
-            } else {
-                throw new Exception("Gagal memperbarui data");
+            if (!$stmt->execute()) {
+                throw new Exception("Gagal memperbarui data: " . $stmt->error);
             }
+            $_SESSION['success'] = "Data berhasil diperbarui!";
         } else {
-            // INSERT data baru
+            // ✅ INSERT data baru
             $sql = "INSERT INTO data_sosial 
-                    (umkm_id, karyawan, karyawan_perempuan, insiden_k3, kejadian, pelatihan_sdm, produk_halal, csr, ziswaf, 
-                     maqasid_tenaga, maqasid_k3, maqasid_sdm, maqasid_produk, maqasid_sosial, created_at) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
+                    (umkm_id, karyawan, karyawan_perempuan, insiden_k3, kejadian, pelatihan_sdm, 
+                     produk_halal, csr, ziswaf, maqasid_tenaga_nasl, maqasid_tenaga_nafs,
+                     maqasid_produk_din, maqasid_produk_nafs, maqasid_sosial_mal, maqasid_sosial_nasl,
+                     maqasid_k3, maqasid_sdm, created_at) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
 
             $stmt = $conn->prepare($sql);
+            if (!$stmt) {
+                throw new Exception("Prepare failed (INSERT): " . $conn->error);
+            }
+
+            // 17 parameter total
+            $types = "iiiisissiiiiiiiss";
             $stmt->bind_param(
-                "iiiisississsss",
+                $types,
                 $umkm_id,
                 $jumlah_karyawan,
                 $jumlah_karyawan_perempuan,
@@ -118,33 +150,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $produk_halal,
                 $csr,
                 $ziswaf,
-                $maqasid_tenaga,
+                $maqasid_tenaga_nasl,
+                $maqasid_tenaga_nafs,
+                $maqasid_produk_din,
+                $maqasid_produk_nafs,
+                $maqasid_sosial_mal,
+                $maqasid_sosial_nasl,
                 $maqasid_k3,
-                $maqasid_sdm,
-                $maqasid_produk,
-                $maqasid_sosial
+                $maqasid_sdm
             );
 
-            if ($stmt->execute()) {
-                $_SESSION['success'] = "Data berhasil disimpan!";
-            } else {
-                throw new Exception("Gagal menyimpan data");
+            if (!$stmt->execute()) {
+                throw new Exception("Gagal menyimpan data: " . $stmt->error);
             }
+            $_SESSION['success'] = "Data berhasil disimpan!";
         }
 
         $stmt->close();
         $conn->commit();
-
         header("Location: lihatsosial.php");
         exit;
 
     } catch (Exception $e) {
-        $conn->rollback();
+        if ($conn->in_transaction) {
+            $conn->rollback();
+        }
         $_SESSION['error'] = "Terjadi kesalahan: " . $e->getMessage();
         header("Location: sosial.php");
         exit;
     }
 }
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -476,15 +514,23 @@ input[type="number"]:focus {
                    min="0"
                    value="<?= $data_existing ? htmlspecialchars($data_existing['karyawan_perempuan']) : '' ?>">
             <div class="checkbox-group">
-              <label><input type="checkbox" 
-                            name="maqasid_tenaga[]" 
-                            value="Hifz al-Nasl"
-                            <?= ($data_existing && strpos($data_existing['maqasid_tenaga'], 'Hifz al-Nasl') !== false) ? 'checked' : '' ?>> Hifz al-Nasl</label>
-              <label><input type="checkbox" 
-                            name="maqasid_tenaga[]" 
-                            value="Hifz al-Nafs"
-                            <?= ($data_existing && strpos($data_existing['maqasid_tenaga'], 'Hifz al-Nafs') !== false) ? 'checked' : '' ?>> Hifz al-Nafs</label>
+            <label>
+                <input type="checkbox" 
+                    name="maqasid_tenaga[]" 
+                    value="Hifz al-Nasl"
+                    <?= ($data_existing && $data_existing['maqasid_tenaga_nasl'] == 1) ? 'checked' : '' ?>>
+                Hifz al-Nasl
+            </label>
+
+            <label>
+                <input type="checkbox" 
+                    name="maqasid_tenaga[]" 
+                    value="Hifz al-Nafs"
+                    <?= ($data_existing && $data_existing['maqasid_tenaga_nafs'] == 1) ? 'checked' : '' ?>>
+                Hifz al-Nafs
+            </label>
             </div>
+
           </div>
 
           <div class="section">
@@ -534,16 +580,24 @@ input[type="number"]:focus {
                             value="Tidak"
                             <?= ($data_existing && $data_existing['produk_halal'] == 'Tidak') ? 'checked' : '' ?>> Tidak</label>
             </div>
-            <div class="checkbox-group">
-              <label><input type="checkbox" 
-                            name="maqasid_produk[]" 
-                            value="Hifz al-Din"
-                            <?= ($data_existing && strpos($data_existing['maqasid_produk'], 'Hifz al-Din') !== false) ? 'checked' : '' ?>> Hifz al-Din</label>
-              <label><input type="checkbox" 
-                            name="maqasid_produk[]" 
-                            value="Hifz al-Nafs"
-                            <?= ($data_existing && strpos($data_existing['maqasid_produk'], 'Hifz al-Nafs') !== false) ? 'checked' : '' ?>> Hifz al-Nafs</label>
+            <div class="checkbox-group"> 
+            <label>
+                <input type="checkbox" 
+                    name="maqasid_produk[]" 
+                    value="Hifz al-Din"
+                    <?= ($data_existing && $data_existing['maqasid_produk_din'] == 1) ? 'checked' : '' ?>>
+                Hifz al-Din
+            </label>
+
+            <label>
+                <input type="checkbox" 
+                    name="maqasid_produk[]" 
+                    value="Hifz al-Nafs"
+                    <?= ($data_existing && $data_existing['maqasid_produk_nafs'] == 1) ? 'checked' : '' ?>>
+                Hifz al-Nafs
+            </label>
             </div>
+
           </div>
 
           <div class="section">
@@ -565,15 +619,23 @@ input[type="number"]:focus {
                    min="0"
                    value="<?= $data_existing ? htmlspecialchars($data_existing['ziswaf']) : '' ?>">
             <div class="checkbox-group">
-              <label><input type="checkbox" 
-                            name="maqasid_sosial[]" 
-                            value="Hifz al-Mal"
-                            <?= ($data_existing && strpos($data_existing['maqasid_sosial'], 'Hifz al-Mal') !== false) ? 'checked' : '' ?>> Hifz al-Mal</label>
-              <label><input type="checkbox" 
-                            name="maqasid_sosial[]" 
-                            value="Hifz al-Nasl"
-                            <?= ($data_existing && strpos($data_existing['maqasid_sosial'], 'Hifz al-Nasl') !== false) ? 'checked' : '' ?>> Hifz al-Nasl</label>
+  <label>
+    <input type="checkbox" 
+           name="maqasid_sosial[]" 
+           value="Hifz al-Mal"
+           <?= ($data_existing && $data_existing['maqasid_sosial_mal'] == 1) ? 'checked' : '' ?>>
+                Hifz al-Mal
+            </label>
+
+            <label>
+                <input type="checkbox" 
+                    name="maqasid_sosial[]" 
+                    value="Hifz al-Nasl"
+                    <?= ($data_existing && $data_existing['maqasid_sosial_nasl'] == 1) ? 'checked' : '' ?>>
+                Hifz al-Nasl
+            </label>
             </div>
+
           </div>
 
           <button type="submit" class="submit-btn">
