@@ -78,24 +78,87 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <head>
     <meta charset="utf-8">
-    <title>SB Admin 2 - Register</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Monitoring ESG - Register</title>
+
+    <!-- Font Awesome -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Google Fonts Nunito -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
+
+    <!-- Custom styles (SB Admin 2) -->
     <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+
     <style>
-        .bg-gradient-primary {
-            background: linear-gradient(90deg, #0096c7, #38b000);
+        body {
+            background: linear-gradient(135deg, #3fab0e, #0096c7);
+            font-family: 'Nunito', sans-serif;
         }
 
-        /* Kolom gambar */
+        .card {
+            border-radius: 20px;
+        }
+
+        .card-body {
+            background: #ffffff;
+            border-radius: 20px;
+        }
+
+        .btn-user {
+            border-radius: 30px;
+            font-weight: 600;
+            background: linear-gradient(90deg, #0096c7, #38b000);
+            border: none;
+            color: #000;
+        }
+
+        .btn-user:hover {
+            background: linear-gradient(90deg, #38b000, #0096c7);
+            transform: scale(1.02);
+            transition: all 0.3s ease-in-out;
+            color: #000;
+        }
+
+        .footer-text {
+            text-align: center;
+            margin-top: -10px;
+            color: white;
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        /* Kolom gambar di register */
         .bg-register-image {
             background: url('../img/esg_bg.jpg') center center;
             background-size: cover;
             border-radius: 10px 0 0 10px;
         }
+
+          @media (max-width: 768px) {
+            .card {
+                margin: 5px; 
+            }
+            .footer-text {
+                font-size: 16px; 
+                margin-top: 10px;
+                padding: 0 10px;
+            }
+            
+            img[alt="Logo UHAMKA"] { height: 60px !important; }
+            img[alt="Logo ESG"] { height: 50px !important; }
+        }
     </style>
 </head>
 
-<body class="bg-gradient-primary">
+<body>
+     <!-- Logo -->
+    <div style="position:absolute; top:20px; left:20px; z-index:1000;">
+        <img src="../img/logo_uhamka.png" alt="Logo UHAMKA" style="height:100px;">
+    </div>
+    <div style="position:absolute; top:20px; right:20px; z-index:1000;">
+        <img src="../img/logo_kemendikbud.png" alt="Logo ESG" style="height:70px;">
+    </div>
 
 <div class="container" style="margin-top: 120px;">
     <div class="card o-hidden border-0 shadow-lg my-5">
@@ -105,7 +168,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
 
                 <!-- FORM REGISTER -->
-                <div class="col-lg-7" style="padding-top: 50px;">
+                <div class="col-lg-7" style="padding-top: 50px; border-radius: 50px">
                     <div class="p-5">
                         <div class="text-center">
                             <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
@@ -135,7 +198,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                            placeholder="Repeat Password" required>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-user btn-block">Register Account</button>
+                            <button type="submit" class="btn btn-user btn-block">Register Account</button>
                         </form>
                         <hr>
                         <div class="text-center">
@@ -145,6 +208,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
             </div>
         </div>
+    </div>
+       <div class="footer-text">
+        Membangun UMKM Berkelanjutan dengan Prinsip ESG Syariah
     </div>
 </div>
 

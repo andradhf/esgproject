@@ -65,6 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Monitoring ESG - Login</title>
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="../css/sb-admin-2.min.css" rel="stylesheet">
@@ -72,6 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         body {
             background: linear-gradient(135deg, #3fab0e, #0096c7);
             font-family: 'Nunito', sans-serif;
+            margin-top: 60px;
         }
         .card { border-radius: 20px; }
         .card-body { background: #ffffff; border-radius: 20px; }
@@ -81,9 +83,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .btn-user:hover { background: linear-gradient(90deg, #38b000, #0096c7);
             transform: scale(1.02); transition: all 0.3s ease-in-out; color: #000; }
         .footer-text { text-align: center; margin-top: -10px; color: white; font-size: 22px; font-weight: 600; }
+
+        @media (max-width: 768px) {
+            .bg-login-image {
+                display: none; 
+            }
+            .card {
+                margin: 20px; 
+            }
+            .footer-text {
+                font-size: 16px; 
+                margin-top: 10px;
+                padding: 0 10px;
+            }
+            
+            img[alt="Logo UHAMKA"] { height: 60px !important; }
+            img[alt="Logo ESG"] { height: 50px !important; }
+        }
+
+        @media (max-width: 576px) {
+            .card {
+                margin: 10px;
+            }
+            .footer-text {
+                font-size: 14px;
+            }
+        }
     </style>
 </head>
-
 <body>
     <!-- Logo -->
     <div style="position:absolute; top:20px; left:20px; z-index:1000;">

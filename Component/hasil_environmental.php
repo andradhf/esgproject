@@ -16,11 +16,30 @@ $data = $result->fetch_assoc();
 
 if ($data) {
     $listrik = (int)$data['listrik'];
-    $air = (int)$data['air'];
-    $limbah = (int)$data['limbah'];
-    $bahan = (int)$data['bahan_baku'];
+    $air     = (int)$data['air'];
+    $limbah  = (int)$data['limbah'];
+    $bahan   = (int)$data['bahan_baku'];
+
+    // ambil indikator maqasid
+    $hifzmal   = (int)$data['hifzmal'];
+    $hifzmal2  = (int)$data['hifzmal2'];
+    $hifznafs  = (int)$data['hifznafs'];
+    $hifzdin   = (int)$data['hifzdin'];
+
+    // hitung jumlah centang
+    $total_hifz = $hifzmal + $hifzmal2 + $hifznafs + $hifzdin;
+
+    // tentukan kategori maqasid
+    if ($total_hifz <= 2) {
+        $kategori_maqasid = "<span style='color:red;font-weight:bold;'>Tidak Sesuai ❌</span>";
+    } elseif ($total_hifz == 3) {
+        $kategori_maqasid = "<span style='color:orange;font-weight:bold;'>Cukup Sesuai ⚠️</span>";
+    } else { // 4
+        $kategori_maqasid = "<span style='color:green;font-weight:bold;'>Sesuai ✅</span>";
+    }
 } else {
     $listrik = $air = $limbah = $bahan = 0;
+    $kategori_maqasid = "<span style='color:gray;'>Belum ada data</span>";
 }
 
 // fungsi nilai
@@ -69,53 +88,86 @@ $conn->close();
 <!DOCTYPE html>
 <html>
 <head>
-<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-<link href="../css/sb-admin-2.min.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Data Environmental</title>
+
+    <!-- Vendor CSS -->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
-            background: linear-gradient(135deg, #d4fc79, #96e6a1);
+            background: linear-gradient(135deg, #3fab0e, #0096c7);
         }
-        h2 { color: #2c3e50; text-align: center; }
+
+        /* Judul */
+        h2 { 
+            color: #2c3e50; 
+            text-align: center; 
+        }
+
+        /* Tabel responsif */
         table {
+            width: 100%;
+            max-width: 800px;
             margin: auto;
             background: #fff;
             border-collapse: collapse;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
         th {
             background: #2ecc71;
             color: white;
-            padding: 10px;
         }
         td {
             background: #ecf0f1;
-            padding: 10px;
-            text-align: center;
         }
+
+        /* Box skor */
         .score-box {
             margin: 20px auto;
             padding: 15px;
-            width: 300px;
+            max-width: 400px;
             background: #fff;
             border-radius: 10px;
             text-align: center;
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
+
+        /* Chart responsif */
         .chart-container {
-            width: 400px;
-            height: 400px;
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            height: 400px;   /* fix tinggi biar jelas */
             margin: 30px auto;
             background: #fff;
             padding: 15px;
             border-radius: 15px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
+
+        /* Responsive untuk layar kecil */
+        @media (max-width: 576px) {
+            body { margin: 10px; }
+            table { font-size: 12px; }
+            .score-box { width: 100%; padding: 10px; }
+            .chart-container { max-width: 100%; height: 300px; padding: 10px; }
+        }
     </style>
 </head>
+
 <body>
     <h2>Data yang sudah tersimpan</h2>
     <table border='1' cellpadding='5' cellspacing='0'>
@@ -147,8 +199,8 @@ $conn->close();
         ?>
     </div>
 
-    <h3 style="text-align:center;">Penilaian Maqasid:</h3> 
-    <p style="text-align:center;">Kategori: <span style='color:green;font-weight:bold;'>Sesuai dengan Syariah Maqasid ✅</span></p>
+    <h3 style="text-align:center; color: white;">Penilaian Maqasid:</h3> 
+    <p style="text-align:center; color: white">Kategori: <?= $kategori_maqasid ?></p>
 
     <div class="chart-container">
         <canvas id="envChart"></canvas>

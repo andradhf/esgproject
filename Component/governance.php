@@ -34,10 +34,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $transparansi = $_POST['transparansi'] ?? 0;
     $integritas = $_POST['integritas'] ?? 0;
 
-    $maqasid_legalitas = isset($_POST['maqasid_legalitas']) ? implode(", ", $_POST['maqasid_legalitas']) : '';
-    $maqasid_syariah = isset($_POST['maqasid_syariah']) ? implode(", ", $_POST['maqasid_syariah']) : '';
-    $maqasid_transparansi = isset($_POST['maqasid_transparansi']) ? implode(", ", $_POST['maqasid_transparansi']) : '';
-    $maqasid_integritas = isset($_POST['maqasid_integritas']) ? implode(", ", $_POST['maqasid_integritas']) : '';
+    // $maqasid_legalitas = isset($_POST['maqasid_legalitas']) ? implode(", ", $_POST['maqasid_legalitas']) : '';
+    // $maqasid_syariah = isset($_POST['maqasid_syariah']) ? implode(", ", $_POST['maqasid_syariah']) : '';
+    // $maqasid_transparansi = isset($_POST['maqasid_transparansi']) ? implode(", ", $_POST['maqasid_transparansi']) : '';
+    // $maqasid_integritas = isset($_POST['maqasid_integritas']) ? implode(", ", $_POST['maqasid_integritas']) : '';
+
+    $maqasid_legalitas = (isset($_POST['maqasid_legalitas']) && !empty($_POST['maqasid_legalitas'])) ? 'Ya' : 'Tidak';
+    $maqasid_syariah = (isset($_POST['maqasid_syariah']) && !empty($_POST['maqasid_syariah'])) ? 'Ya' : 'Tidak';
+    $maqasid_transparansi = (isset($_POST['maqasid_transparansi']) && !empty($_POST['maqasid_transparansi'])) ? 'Ya' : 'Tidak';
+    $maqasid_integritas = (isset($_POST['maqasid_integritas']) && !empty($_POST['maqasid_integritas'])) ? 'Ya' : 'Tidak';
 
     // Validasi minimal satu field terisi
     if ($legalitas == 0 && $kepatuhan_syariah == 0 && $transparansi == 0 && $integritas == 0) {
