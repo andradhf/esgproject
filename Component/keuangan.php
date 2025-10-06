@@ -11,11 +11,10 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
 $umkm_id  = $_SESSION['umkm_id'];
 $username = $_SESSION['username'];
 
-// Inisialisasi variabel untuk form
+// Ambil data terakhir (jika ada)
 $data_existing = null;
 $is_update = false;
 
-// Cek apakah user sudah pernah input data
 $stmt = $conn->prepare("SELECT * FROM data_keuangan WHERE umkm_id = ? ORDER BY created_at DESC LIMIT 1");
 $stmt->bind_param("i", $umkm_id);
 $stmt->execute();
@@ -29,20 +28,26 @@ $stmt->close();
 
 // Jika form disubmit
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+    // Pendapatan Halal
     if (isset($_POST['pendapatan'])) {
-    if ($_POST['pendapatan'] === "Halal") {
-        $pendapatan = 1.00;
+        $pendapatan = ($_POST['pendapatan'] === "Halal") ? 1.00 : 0.00;
     } else {
-        $pendapatan = 0.00;
+        $pendapatan = null;
     }
-} else {
-    $pendapatan = null; // kalau tidak dipilih
-}
+
     $jumlah_ziswaf = $_POST['jumlah_ziswaf'] ?? 0;
     $akad = $_POST['akad'] ?? '';
 
-    $maqasid_pendapatan = isset($_POST['maqasid_pendapatan']) ? implode(", ", $_POST['maqasid_pendapatan']) : '';
-    $maqasid_ziswaf = isset($_POST['maqasid_ziswaf']) ? implode(", ", $_POST['maqasid_ziswaf']) : '';
+    // ==============================
+    // MAQASID (dari checkbox)
+    // ==============================
+    $maqasid_pendapatan_din = in_array('Hifz al-Din', $_POST['maqasid_pendapatan'] ?? []) ? 'Hifz al-Din' : null;
+    $maqasid_pendapatan_mal = in_array('Hifz al-Mal', $_POST['maqasid_pendapatan'] ?? []) ? 1 : 0;
+
+    $maqasid_ziswaf_din = in_array('Hifz al-Din', $_POST['maqasid_ziswaf'] ?? []) ? 'Hifz al-Din' : null;
+    $maqasid_ziswaf_mal = in_array('Hifz al-Mal', $_POST['maqasid_ziswaf'] ?? []) ? 1 : 0;
+
     $maqasid_pembiayaan = isset($_POST['maqasid_pembiayaan']) ? implode(", ", $_POST['maqasid_pembiayaan']) : '';
 
     // Validasi minimal satu field terisi
@@ -62,20 +67,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     pendapatan_halal = ?, 
                     ziswaf = ?, 
                     pembiayaan = ?, 
-                    maqasid_pendapatan = ?, 
-                    maqasid_ziswaf = ?, 
+                    maqasid_pendapatan_din = ?, 
+                    maqasid_pendapatan_mal = ?, 
+                    maqasid_ziswaf_din = ?, 
+                    maqasid_ziswaf_mal = ?, 
                     maqasid_pembiayaan = ?,
                     created_at = NOW()
                     WHERE umkm_id = ?";
 
             $stmt = $conn->prepare($sql);
             $stmt->bind_param(
-                "ddssssi",
+                "ddssisssi",
                 $pendapatan,
                 $jumlah_ziswaf,
                 $akad,
-                $maqasid_pendapatan,
-                $maqasid_ziswaf,
+                $maqasid_pendapatan_din,
+                $maqasid_pendapatan_mal,
+                $maqasid_ziswaf_din,
+                $maqasid_ziswaf_mal,
                 $maqasid_pembiayaan,
                 $umkm_id
             );
@@ -88,18 +97,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         } else {
             // INSERT data baru
             $sql = "INSERT INTO data_keuangan 
-                    (umkm_id, pendapatan_halal, ziswaf, pembiayaan, maqasid_pendapatan, maqasid_ziswaf, maqasid_pembiayaan, created_at) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, NOW())";
+                    (umkm_id, pendapatan_halal, ziswaf, pembiayaan, 
+                     maqasid_pendapatan_din, maqasid_pendapatan_mal, 
+                     maqasid_ziswaf_din, maqasid_ziswaf_mal, maqasid_pembiayaan, created_at) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
 
             $stmt = $conn->prepare($sql);
             $stmt->bind_param(
-                "iddssss",
+                "iddssisss",
                 $umkm_id,
                 $pendapatan,
                 $jumlah_ziswaf,
                 $akad,
-                $maqasid_pendapatan,
-                $maqasid_ziswaf,
+                $maqasid_pendapatan_din,
+                $maqasid_pendapatan_mal,
+                $maqasid_ziswaf_din,
+                $maqasid_ziswaf_mal,
                 $maqasid_pembiayaan
             );
 
@@ -381,80 +394,84 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <form action="" method="post">
                     <!-- A. PENDAPATAN HALAL -->
                     <div class="section">
-                        <h2>A. Pendapatan Halal</h2>
-                        <label>Rasio pendapatan halal/non halal</label>
-                        <div class="row">
-                           <label><input type="radio" 
-                            name="pendapatan" 
-                            value="Halal"
-                            <?= ($data_existing && $data_existing['pendapatan_halal'] == 1.00) ? 'checked' : '' ?>> Halal</label>
-                            <label><input type="radio" 
-                            name="pendapatan" 
-                            value="Non Halal"
-                            <?= ($data_existing && $data_existing['pendapatan_halal'] == 0.00) ? 'checked' : '' ?>> Non Halal</label>
-                        </div>
-                        <div class="checkbox-group">
-                            <label><input type="checkbox" 
-                                          name="maqasid_pendapatan[]" 
-                                          value="Hifz al-Din"
-                                          <?= ($data_existing && strpos($data_existing['maqasid_pendapatan'], 'Hifz al-Din') !== false) ? 'checked' : '' ?>> Hifz al-Din</label>
-                            <label><input type="checkbox" 
-                                          name="maqasid_pendapatan[]" 
-                                          value="Hifz al-Mal"
-                                          <?= ($data_existing && strpos($data_existing['maqasid_pendapatan'], 'Hifz al-Mal') !== false) ? 'checked' : '' ?>> Hifz al-Mal</label>
-                        </div>
+                    <h2>A. Pendapatan Halal</h2>
+                    <label>Rasio pendapatan halal/non halal</label>
+                    <div class="row">
+                        <label><input type="radio" 
+                        name="pendapatan" 
+                        value="Halal"
+                        <?= ($data_existing && $data_existing['pendapatan_halal'] == 1.00) ? 'checked' : '' ?>> Halal</label>
+                        <label><input type="radio" 
+                        name="pendapatan" 
+                        value="Non Halal"
+                        <?= ($data_existing && $data_existing['pendapatan_halal'] == 0.00) ? 'checked' : '' ?>> Non Halal</label>
+                    </div>
+
+                    <!-- ✅ Disesuaikan -->
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" 
+                        name="maqasid_pendapatan[]" 
+                        value="Hifz al-Din"
+                        <?= ($data_existing && !empty($data_existing['maqasid_pendapatan_din']) && strpos($data_existing['maqasid_pendapatan_din'], 'Hifz al-Din') !== false) ? 'checked' : '' ?>> Hifz al-Din</label>
+                        <label><input type="checkbox" 
+                        name="maqasid_pendapatan[]" 
+                        value="Hifz al-Mal"
+                        <?= ($data_existing && $data_existing['maqasid_pendapatan_mal'] == 1) ? 'checked' : '' ?>> Hifz al-Mal</label>
+                    </div>
                     </div>
 
                     <!-- B. DISTRIBUSI ZISWAF -->
                     <div class="section">
-                        <h2>B. Distribusi ZISWAF</h2>
-                        <label>Jumlah Zakat/Infak/Sedekah/Wakaf</label>
-                        <input type="number" 
-                               name="jumlah_ziswaf" 
-                               style="width:250px;"
-                               min="0"
-                               value="<?= $data_existing ? htmlspecialchars($data_existing['ziswaf']) : '' ?>">
-                        <div class="checkbox-group">
-                            <label><input type="checkbox" 
-                                          name="maqasid_ziswaf[]" 
-                                          value="Hifz al-Din"
-                                          <?= ($data_existing && strpos($data_existing['maqasid_ziswaf'], 'Hifz al-Din') !== false) ? 'checked' : '' ?>> Hifz al-Din</label>
-                            <label><input type="checkbox" 
-                                          name="maqasid_ziswaf[]" 
-                                          value="Hifz al-Mal"
-                                          <?= ($data_existing && strpos($data_existing['maqasid_ziswaf'], 'Hifz al-Mal') !== false) ? 'checked' : '' ?>> Hifz al-Mal</label>
-                        </div>
+                    <h2>B. Distribusi ZISWAF</h2>
+                    <label>Jumlah Zakat/Infak/Sedekah/Wakaf</label>
+                    <input type="number" 
+                        name="jumlah_ziswaf" 
+                        style="width:250px;"
+                        min="0"
+                        value="<?= $data_existing ? htmlspecialchars($data_existing['ziswaf']) : '' ?>">
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" 
+                        name="maqasid_ziswaf[]" 
+                        value="Hifz al-Din"
+                        <?= ($data_existing && !empty($data_existing['maqasid_ziswaf_din']) && strpos($data_existing['maqasid_ziswaf_din'], 'Hifz al-Din') !== false) ? 'checked' : '' ?>> Hifz al-Din</label>
+                        <label><input type="checkbox" 
+                        name="maqasid_ziswaf[]" 
+                        value="Hifz al-Mal"
+                        <?= ($data_existing && $data_existing['maqasid_ziswaf_mal'] == 1) ? 'checked' : '' ?>> Hifz al-Mal</label>
+                    </div>
                     </div>
 
                     <!-- C. PEMBIAYAAN -->
                     <div class="section">
-                        <h2>C. Pembiayaan</h2>
-                        <label>Jenis Akad Syariah</label>
-                        <p>Pilih salah satu:</p>
-                        <div class="row">
-                            <label><input type="radio" 
-                                          name="akad" 
-                                          value="Murabahah"
-                                          <?= ($data_existing && $data_existing['pembiayaan'] == 'Murabahah') ? 'checked' : '' ?>> Murabahah</label>
-                        </div>
-                        <div class="row">
-                            <label><input type="radio" 
-                                          name="akad" 
-                                          value="Mudharabah"
-                                          <?= ($data_existing && $data_existing['pembiayaan'] == 'Mudharabah') ? 'checked' : '' ?>> Mudharabah</label>
-                        </div>
-                        <div class="row">
-                            <label><input type="radio" 
-                                          name="akad" 
-                                          value="Ijarah"
-                                          <?= ($data_existing && $data_existing['pembiayaan'] == 'Ijarah') ? 'checked' : '' ?>> Ijarah</label>
-                        </div>
-                        <div class="checkbox-group">
-                            <label><input type="checkbox" 
-                                          name="maqasid_pembiayaan[]" 
-                                          value="Hifz al-Mal"
-                                          <?= ($data_existing && strpos($data_existing['maqasid_pembiayaan'], 'Hifz al-Mal') !== false) ? 'checked' : '' ?>> Hifz al-Mal</label>
-                        </div>
+                    <h2>C. Pembiayaan</h2>
+                    <label>Jenis Akad Syariah</label>
+                    <p>Pilih salah satu:</p>
+                    <div class="row">
+                        <label><input type="radio" 
+                        name="akad" 
+                        value="Murabahah"
+                        <?= ($data_existing && $data_existing['pembiayaan'] == 'Murabahah') ? 'checked' : '' ?>> Murabahah</label>
+                    </div>
+                    <div class="row">
+                        <label><input type="radio" 
+                        name="akad" 
+                        value="Mudharabah"
+                        <?= ($data_existing && $data_existing['pembiayaan'] == 'Mudharabah') ? 'checked' : '' ?>> Mudharabah</label>
+                    </div>
+                    <div class="row">
+                        <label><input type="radio" 
+                        name="akad" 
+                        value="Ijarah"
+                        <?= ($data_existing && $data_existing['pembiayaan'] == 'Ijarah') ? 'checked' : '' ?>> Ijarah</label>
+                    </div>
+                    
+                    <!-- ✅ Disesuaikan -->
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" 
+                        name="maqasid_pembiayaan[]" 
+                        value="Hifz al-Mal"
+                        <?= ($data_existing && strpos($data_existing['maqasid_pembiayaan'], 'Hifz al-Mal') !== false) ? 'checked' : '' ?>> Hifz al-Mal</label>
+                    </div>
                     </div>
 
                     <!-- Tombol submit -->
